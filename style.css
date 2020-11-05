@@ -1,0 +1,21 @@
+@font-face {font-family: 'Pixeled'; src: url('Pixeled.eot?#iefix') format('embedded-opentype'), url('Pixeled.woff') format('woff'), url('Pixeled.ttf')  format('truetype'),url("Pixeled.eot") format("eot")}
+#maincontainer { width:900px; height:600px;overflow:hidden;margin:auto;background-color:#e8e8e8; background-repeat: no-repeat;display:none;}
+#gamecontainer { width:900px; height:600px; overflow:hidden;position:relative;}
+#header{width:900px; height:157px; background-image: url("images/header.png");background-position: center; }
+#dro{width:70px; height:231px; background-image: url("images/dro.png");position:absolute;left: 380px;top: 320px; }
+#floor {width:100%; height:49px; position: Absolute; bottom: 0px; background-image: url("images/floor-bg-tile.png");  background-repeat: repeat-x; }
+#richard { width:86px; height:200px;position: absolute;left: 40px;top: 258px; }#richard:hover{cursor: pointer; }
+#moneymoneymoney{width:60px; height:225px;position: absolute;left: 304px;top: 253px;}
+#anita{width:68px; height:184px;position: absolute;left: 300px;top: 274px;}#anita:hover{cursor: pointer; }
+#bastard{width:138px; height:176px;position: absolute;left: 304px;top: 138px;}#bastard:hover{cursor: pointer; }
+#ladder{width:66px; height:144px;position: absolute;left: 374px;top: 314px;}#ladder:hover{cursor: pointer; }
+#drunktalk{ width:138px; height:129px; position: absolute; left: 100px; top: 176px; display:none;}
+#loveyouforever{ width:138px; height:64px; position: absolute; left: 100px; top: 248px; display:none;}
+#butidontloveyou{width:116px; height:64px; position: absolute; left: 174px;top: 252px; display:none;}
+#babies{width:204px; height:89px; background-image: url("images/babies.gif"); position: absolute; left: 132px;top: 369px;z-index:3}
+#nothing{width:94px; height:64px; position: absolute; left: 278px;top: 120px; display:none;}
+#death{width:68px; height:60px; position: absolute; left: 398px;top: 390px; display:none; }
+#banner{width:474px; height:82px}
+#yearcounter{color:#ffd7b5; z-index:2; position: absolute; top: 461px; left:5px;font-family: 'Pixeled';font-size:20px; }
+#musicbutton{color:#ffd7b5; z-index:2; position: absolute; top: 461px; left:310px;font-family: 'Pixeled';font-size:20px; }#musicbutton:hover{cursor: pointer;color:white; }
+#loading p {color:#ffd7b5; font-family: 'Pixeled';font-size:20px; text-align:center;}
