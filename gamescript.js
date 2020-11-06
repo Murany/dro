@@ -78,12 +78,15 @@ $(document).ready(function(){
 });
 });
 });*/
+var money = "0000";
+var lvl = "00";
+var ownerheads = [{image:"images/heads/o_h1.png",width:63,height:78}, {image:"images/heads/o_h2.png",width:35,height:56}, {image:"images/heads/o_h3.png",width:49,height:56}];
+var ownertorsos = [{image:"images/torsos/o_t1.png",width:63,height:81,cutoff:18}, {image:"images/torsos/o_t2.png",width:63,height:70}, {image:"images/torsos/o_t3.png",width:63,height:63,cutoff:7}];
+var ownerlegs = [{image:"images/legs/o_l1.png",width:63,height:105}, {image:"images/legs/o_l2.png",width:57,height:105}, {image:"images/legs/o_l3.png",width:63,height:84}];	
+var colors = [{image:"images/s_red.png",code:"#c43810"}, {image:"images/s_black.png",code:"#000000"},  {image:"images/s_blue.png",code:"#1747ba"},  {image:"images/s_green.png",code:"#36b60f"}, {image:"images/s_orange.png",code:"#d06612s"} ];
+
 game_start();
-var canstartconvo = 0;
-	var drunk=0;
-	var ending=0;
-	var year=2014;
-	var audio = new Audio('sss_theme.mp3');
+	//var audio = new Audio('sss_theme.mp3');
 
 
 function game_start() {
@@ -93,14 +96,71 @@ function game_start() {
 	//audio.loop=true;
 	//audio.play();
 
+	$("#lvl-value").html(lvl);
+	$("#money-value").html(money);
+	create_owner();
+}
+function create_illness() {
+	var s_length = 0;
+	var last_color = "";
+	var arr_illnesses = [];
+	if(lvl < 3){
+		s_length = 3;
+	}
+	else if(6 >lvl >3 )
+	{
+		s_length = 5;
+	}
+	else if(9 >lvl >6 )
+	{
+		s_length = 7;
+	}
+	else{
+		s_length = 9;
+	}
+	for (i = 0; i < s_length; i++) {
+		var c = colors[Math.floor(Math.random() * colors.length)];
+		arr_illnesses.push(c);
+	}	
+	return arr_illnesses;
 	
-	setInterval(create_next_owner, 1900);
 }
 
-function create_next_owner() {
-
+function tell_illnesses(illnesses) {
+	$('#speech_bubble').show();
+	i = 0;
+	
+	if(i < illnesses.length){
+		$('#symptom').css("background-image" , "url("+illnesses[i].image+")" );
+		console.log(illnesses[i].image);
+		i++;
+		setTimeout(function(){ 
+		debugger
+			$('#symptom').css("background-image" , "none" );
+		}, 3000);
+		
+	}
 	
 }
+
+function create_owner() {
+	var head = ownerheads[2]; //ownerheads[Math.floor(Math.random() * ownerheads.length)];
+	var torso = ownertorsos[2]; //ownertorsos[Math.floor(Math.random() * ownertorsos.length)];
+	var legs = ownerlegs[2]; //ownerlegs[Math.floor(Math.random() * ownerlegs.length)];
+	$('#owner-head').css({"background-image" : "url("+head.image+")" , "width" : head.width , "height" : head.height});
+	$('#owner-torso').css({"background-image" : "url("+torso.image+")" , "width" : torso.width , "height" : torso.height});
+	$('#owner-legs').css({"background-image" : "url("+legs.image+")" , "width" : legs.width , "height" : legs.height});
+	
+	if(torso.hasOwnProperty("cutoff")){
+		$('#owner-torso').css("margin-bottom" , "-"+String(torso.cutoff)+"px");
+	}
+	
+	setTimeout(function(){ 
+			var illnesses = create_illness();
+			tell_illnesses(illnesses);
+		}, 3000);
+}
+
 
 /*
 	$("#drink").click(function(){

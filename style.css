@@ -1,9 +1,27 @@
-@font-face {font-family: 'Pixeled'; src: url('Pixeled.eot?#iefix') format('embedded-opentype'), url('Pixeled.woff') format('woff'), url('Pixeled.ttf')  format('truetype'),url("Pixeled.eot") format("eot")}
+/*@font-face {font-family: 'Pixeled'; src: url('Pixeled.eot?#iefix') format('embedded-opentype'), url('Pixeled.woff') format('woff'), url('Pixeled.ttf')  format('truetype'),url("Pixeled.eot") format("eot")}*/
+
+@font-face {font-family: 'fff-forward'; src: url('fff-forward/FFFFORWA.ttf')  format('truetype')}
 #maincontainer { width:900px; height:600px;overflow:hidden;margin:auto;background-color:#e8e8e8; background-repeat: no-repeat;display:none;}
 #gamecontainer { width:900px; height:600px; overflow:hidden;position:relative;}
 #header{width:900px; height:157px; background-image: url("images/header.png");background-position: center; }
-#dro{width:70px; height:231px; background-image: url("images/dro.png");position:absolute;left: 380px;top: 320px; }
+#cross{width:129px; height:129px; background-image: url("images/cross.png");background-position: center; position:absolute; left:383px; top: 13px;}
+#values{z-index:2; position: absolute; top: 10px; left:582px;font-family: 'fff-forward';font-size:36px; }
+#lvl-label, #money-label{color:#ffffff; z-index:2;}
+#lvl-value, #money-value{color:#178e64; z-index:2; }
+
+#dro{width:70px; height:231px; background-image: url("images/dro.png");position:absolute;left: 410px;top: 320px; }
+#cabinet{width:182px; height:322px; background-image: url("images/cabinet.png");position:absolute;left: 172px;top: 229px; }
+.syringe{width:140px; height:35px; background-image: url("images/syringe.png");position:relative; margin-left: 21px; margin-top: 44px; }
+.color-code{width:14px;height:14px;background-color:red;position:absolute; margin-left:21px;}
 #floor {width:100%; height:49px; position: Absolute; bottom: 0px; background-image: url("images/floor-bg-tile.png");  background-repeat: repeat-x; }
+
+#speech_bubble{width:84px; height:56px; background-image: url("images/speech_bubble.png");position:absolute;left: 620px;top: 280px; }
+#owner{position:absolute;left: 714px ;bottom: 49px; }
+#owner-head{position:relative; }
+#owner-torso{position:relative; z-index: 100; }
+#owner-legs{position:relative; z-index: 0; }
+
+
 #richard { width:86px; height:200px;position: absolute;left: 40px;top: 258px; }#richard:hover{cursor: pointer; }
 #moneymoneymoney{width:60px; height:225px;position: absolute;left: 304px;top: 253px;}
 #anita{width:68px; height:184px;position: absolute;left: 300px;top: 274px;}#anita:hover{cursor: pointer; }
@@ -16,6 +34,6 @@
 #nothing{width:94px; height:64px; position: absolute; left: 278px;top: 120px; display:none;}
 #death{width:68px; height:60px; position: absolute; left: 398px;top: 390px; display:none; }
 #banner{width:474px; height:82px}
-#yearcounter{color:#ffd7b5; z-index:2; position: absolute; top: 461px; left:5px;font-family: 'Pixeled';font-size:20px; }
+
 #musicbutton{color:#ffd7b5; z-index:2; position: absolute; top: 461px; left:310px;font-family: 'Pixeled';font-size:20px; }#musicbutton:hover{cursor: pointer;color:white; }
 #loading p {color:#ffd7b5; font-family: 'Pixeled';font-size:20px; text-align:center;}
