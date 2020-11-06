@@ -83,8 +83,8 @@ var lvl = "00";
 var ownerheads = [{image:"images/heads/o_h1.png",width:63,height:78}, {image:"images/heads/o_h2.png",width:35,height:56}, {image:"images/heads/o_h3.png",width:49,height:56}];
 var ownertorsos = [{image:"images/torsos/o_t1.png",width:63,height:81,cutoff:18}, {image:"images/torsos/o_t2.png",width:63,height:70}, {image:"images/torsos/o_t3.png",width:63,height:63,cutoff:7}];
 var ownerlegs = [{image:"images/legs/o_l1.png",width:63,height:105}, {image:"images/legs/o_l2.png",width:57,height:105}, {image:"images/legs/o_l3.png",width:63,height:84}];	
-var colors = [{image:"images/s_red.png",code:"#c43810"}, {image:"images/s_black.png",code:"#000000"},  {image:"images/s_blue.png",code:"#1747ba"},  {image:"images/s_green.png",code:"#36b60f"}, {image:"images/s_orange.png",code:"#d06612s"} ];
-
+var colors = [{image:"images/s_red.png",code:"#c43810"}, {image:"images/s_black.png",code:"#000000"},  {image:"images/s_blue.png",code:"#1747ba"},  {image:"images/s_green.png",code:"#36b60f"}, {image:"images/s_orange.png",code:"#d06612"} ];
+var curr_illnesses = [];
 game_start();
 	//var audio = new Audio('sss_theme.mp3');
 
@@ -126,20 +126,66 @@ function create_illness() {
 	
 }
 
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+ 
+  while (0 !== currentIndex) {
+
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
 function tell_illnesses(illnesses) {
 	$('#speech_bubble').show();
+	
 	i = 0;
 	
-	if(i < illnesses.length){
 		$('#symptom').css("background-image" , "url("+illnesses[i].image+")" );
-		console.log(illnesses[i].image);
-		i++;
-		setTimeout(function(){ 
-		debugger
-			$('#symptom').css("background-image" , "none" );
-		}, 3000);
-		
+		var repeat = setInterval(function(){
+			if(i < illnesses.length){
+				$('#symptom').css("background-image" , "none" );
+				$('#symptom').css("background-image" , "url("+illnesses[i].image+")" );
+			}
+			if(i == illnesses.length){
+				clearInterval(repeat);
+				setTimeout(function(){
+					$('#symptom').css("background-image" , "none" );
+					$('#speech_bubble').hide();
+					create_medicine(illnesses);
+				},2000);
+			}
+			++i;
+		}, 2000);
+	
+}
+
+function create_medicine(illnesses){
+	var shelves = ["#option-1 .code-wrap","#option-2 .code-wrap","#option-3 .code-wrap"];
+	var correct = shelves[Math.floor(Math.random() * shelves.length)];
+	curr_illnesses = illnesses;
+	illnesses.forEach(function(illness) { 
+		$(correct).append("<div class='color-code' id='id"+illness.code+"' style='background-color:"+illness.code+"'></div>" );
 	}
+	);
+	
+	shelves.forEach(function(self) {  
+		if(self != correct){
+			illnesses = shuffle(illnesses);
+			illnesses.forEach(function(illness) {  
+					$(self).append( "<div class='color-code'  id='id"+illness.code+"' style='background-color:"+illness.code+"'></div>" );
+			});
+			
+		}
+	});
+	$('.syringe').show();
 	
 }
 
@@ -155,28 +201,36 @@ function create_owner() {
 		$('#owner-torso').css("margin-bottom" , "-"+String(torso.cutoff)+"px");
 	}
 	
-	setTimeout(function(){ 
-			var illnesses = create_illness();
-			tell_illnesses(illnesses);
-		}, 3000);
+	var illnesses = create_illness();
+	tell_illnesses(illnesses);
+		
 }
 
-
-/*
-	$("#drink").click(function(){
-		if (drunk!=1 && ending!=1){
-		drunk=1;
-		$('#richard').css("background-image", "url(images/richarddrunk.gif)");
-		$("#drunkstars").show();
-		setTimeout(function(){
-			drunk=0;
-			$("#drunkstars").hide();
-			$('#richard').css("background-image", "url(images/richard.gif)");
-			}, 3500); 
-	}
+	$(".syringe").click(function(){
+		var codes = $(this).siblings(".code-wrap").children();
+		console.log(codes);
+		error = false;
+		i=0;
+		while(!error && i< curr_illnesses.length){
+			id = codes.eq(i).attr('id');
+			id = id.replace('id','');
+			console.log(id)
+			if(curr_illnesses[i].code != id){
+				error = true;
+			}
+			i++;
+		}
 		
-    });
-	
+		if(!error){
+			alert("ok");
+		}
+		else{
+			alert("error");
+		}
+	});
+		
+});
+	/*
     $("#richard").click(function(){
 		if (canstartconvo==1 && ending != 1){
 			canstartconvo=0;
@@ -288,4 +342,3 @@ function create_owner() {
 				{audio.play();$( "#musicbutton" ).text( "Music:On" );}
 			});
 	*/
-});
