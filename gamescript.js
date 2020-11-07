@@ -80,6 +80,8 @@ $(document).ready(function(){
 });*/
 var money = "0000";
 var lvl = "00";
+var time_limit = null;
+var pets = [{image:"images/pets/cat1.png",width:119,height:105}, {image:"images/pets/dog1.png",width:140,height:122}];
 var ownerheads = [{image:"images/heads/o_h1.png",width:63,height:78}, {image:"images/heads/o_h2.png",width:35,height:56}, {image:"images/heads/o_h3.png",width:49,height:56}];
 var ownertorsos = [{image:"images/torsos/o_t1.png",width:63,height:81,cutoff:18}, {image:"images/torsos/o_t2.png",width:63,height:70}, {image:"images/torsos/o_t3.png",width:63,height:63,cutoff:7}];
 var ownerlegs = [{image:"images/legs/o_l1.png",width:63,height:105}, {image:"images/legs/o_l2.png",width:57,height:105}, {image:"images/legs/o_l3.png",width:63,height:84}];	
@@ -98,30 +100,38 @@ function game_start() {
 
 	$("#lvl-value").html(lvl);
 	$("#money-value").html(money);
-	create_owner();
+	
+	create_customer();
 }
 function create_illness() {
 	var s_length = 0;
+	var milliseconds = 0;
 	var last_color = "";
 	var arr_illnesses = [];
 	if(lvl < 3){
 		s_length = 3;
+		milliseconds = 50000
 	}
 	else if(6 >lvl >3 )
 	{
 		s_length = 5;
+		milliseconds = 40000
 	}
 	else if(9 >lvl >6 )
 	{
 		s_length = 7;
+		milliseconds = 30000
 	}
 	else{
 		s_length = 9;
+		milliseconds = 20000
 	}
 	for (i = 0; i < s_length; i++) {
 		var c = colors[Math.floor(Math.random() * colors.length)];
 		arr_illnesses.push(c);
 	}
+	time_limit = new Date(milliseconds);
+	
 	curr_illnesses = arr_illnesses;	
 	return arr_illnesses;
 }
@@ -141,6 +151,33 @@ function shuffle(array) {
   }
 
   return array;
+}
+
+function start_timer(){
+	$('#time-limit').show();
+	var repeat = setInterval(function(){
+		if(time_limit.getTime() > 0 ){
+			
+			time_limit = new Date(time_limit-1000);
+			$("#time-limit").html(time_limit.getMinutes()+":"+time_limit.getSeconds());
+		}
+		else{
+			clearInterval(repeat);
+			$('#time-limit').hide();
+			customer_leave(false);
+		}
+	},1000);
+}
+
+function customer_leave(success){
+	/*bg flip
+	-moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+	*/
 }
 
 function tell_illnesses(illnesses) {
@@ -198,13 +235,17 @@ function create_medicine(illnesses){
 		}
 	});
 	$('.syringe').show();
+	start_timer();
 	
 }
 
-function create_owner() {
+function create_customer() {
+	var pet = pets[Math.floor(Math.random() * pets.length)];
 	var head = ownerheads[2]; //ownerheads[Math.floor(Math.random() * ownerheads.length)];
 	var torso = ownertorsos[2]; //ownertorsos[Math.floor(Math.random() * ownertorsos.length)];
 	var legs = ownerlegs[2]; //ownerlegs[Math.floor(Math.random() * ownerlegs.length)];
+	
+	$('#pet').css({"background-image" : "url("+pet.image+")" , "width" : pet.width , "height" : pet.height});
 	$('#owner-head').css({"background-image" : "url("+head.image+")" , "width" : head.width , "height" : head.height});
 	$('#owner-torso').css({"background-image" : "url("+torso.image+")" , "width" : torso.width , "height" : torso.height});
 	$('#owner-legs').css({"background-image" : "url("+legs.image+")" , "width" : legs.width , "height" : legs.height});
@@ -212,7 +253,12 @@ function create_owner() {
 	if(torso.hasOwnProperty("cutoff")){
 		$('#owner-torso').css("margin-bottom" , "-"+String(torso.cutoff)+"px");
 	}
-	
+	var game_container_width = $('#gamecontainer').width();
+	var owner_width = $('#owner').width();
+	$('#pet-wrap').css("left" , "-"+pet.width+"px");
+	var customer_width = $('#customer').width();
+	$('#customer').css("left" , (game_container_width+pet.width+owner_width)-customer_width+"px");
+	$("#customer").animate({left: '-=280'}, 3300);
 	var illnesses = create_illness();
 	tell_illnesses(illnesses);
 		

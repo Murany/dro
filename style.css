@@ -3,9 +3,11 @@
 @font-face {font-family: 'fff-forward'; src: url('fff-forward/FFFFORWA.ttf')  format('truetype')}
 #maincontainer { width:900px; height:600px;overflow:hidden;margin:auto;background-color:#e8e8e8; background-repeat: no-repeat;display:none;}
 #gamecontainer { width:900px; height:600px; overflow:hidden;position:relative;}
+/*banner{width:360px; height:45px; background-image: url("images/banner.gif");background-position: center; position:absolute; top:10px;left:10px;}*/
 #header{width:900px; height:157px; background-image: url("images/header.png");background-position: center; }
 #cross{width:129px; height:129px; background-image: url("images/cross.png");background-position: center; position:absolute; left:383px; top: 13px;}
 #values{z-index:2; position: absolute; top: 10px; left:582px;font-family: 'fff-forward';font-size:36px; }
+#time-limit{width:129px; height:129px; position:absolute; left:383px; top: 155px; font-family: 'fff-forward';font-size:36px;color:#178e64;text-align:center;display:none;}
 #lvl-label, #money-label{color:#ffffff; z-index:2;}
 #lvl-value, #money-value{color:#178e64; z-index:2; }
 
@@ -20,12 +22,16 @@
 
 #speech_bubble{width:84px; height:56px; background-image: url("images/speech_bubble.png");position:absolute;left: 620px;top: 280px; }
 #symptom{width:49px; height:35px; background-position:center; position: relative; top: 6px; left: 14px;}
-#owner{position:absolute;left: 714px ;bottom: 49px; }
-#owner-head{position:relative; }
-#owner-torso{position:relative; z-index: 100; }
-#owner-legs{position:relative; z-index: 0; }
+#customer{position:absolute; bottom: 49px;}
+#pet{float: left; background-position:bottom; background-repeat:no-repeat;}
+#pet-wrap{position: absolute; bottom: 0;left: 0;}
+#owner{float: left;}
+#selected-syringe{position:relative;background-image:url("images/syringe.png");width:140px; height:35px;top: 112px;left: 21px; display:none;}
+#owner-head{position:relative; background-position:bottom;}
+#owner-torso{position:relative; z-index: 100; background-position:bottom;}
+#owner-legs{position:relative; z-index: 0; background-position:bottom;}
 
-
+/*
 #richard { width:86px; height:200px;position: absolute;left: 40px;top: 258px; }#richard:hover{cursor: pointer; }
 #moneymoneymoney{width:60px; height:225px;position: absolute;left: 304px;top: 253px;}
 #anita{width:68px; height:184px;position: absolute;left: 300px;top: 274px;}#anita:hover{cursor: pointer; }
@@ -37,7 +43,6 @@
 #babies{width:204px; height:89px; background-image: url("images/babies.gif"); position: absolute; left: 132px;top: 369px;z-index:3}
 #nothing{width:94px; height:64px; position: absolute; left: 278px;top: 120px; display:none;}
 #death{width:68px; height:60px; position: absolute; left: 398px;top: 390px; display:none; }
-#banner{width:474px; height:82px}
 
 #musicbutton{color:#ffd7b5; z-index:2; position: absolute; top: 461px; left:310px;font-family: 'Pixeled';font-size:20px; }#musicbutton:hover{cursor: pointer;color:white; }
-#loading p {color:#ffd7b5; font-family: 'Pixeled';font-size:20px; text-align:center;}
+#loading p {color:#ffd7b5; font-family: 'Pixeled';font-size:20px; text-align:center;}*/s
