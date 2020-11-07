@@ -84,7 +84,7 @@ var ownerheads = [{image:"images/heads/o_h1.png",width:63,height:78}, {image:"im
 var ownertorsos = [{image:"images/torsos/o_t1.png",width:63,height:81,cutoff:18}, {image:"images/torsos/o_t2.png",width:63,height:70}, {image:"images/torsos/o_t3.png",width:63,height:63,cutoff:7}];
 var ownerlegs = [{image:"images/legs/o_l1.png",width:63,height:105}, {image:"images/legs/o_l2.png",width:57,height:105}, {image:"images/legs/o_l3.png",width:63,height:84}];	
 var colors = [{image:"images/s_red.png",code:"#c43810"}, {image:"images/s_black.png",code:"#000000"},  {image:"images/s_blue.png",code:"#1747ba"},  {image:"images/s_green.png",code:"#36b60f"}, {image:"images/s_orange.png",code:"#d06612"} ];
-var curr_illnesses = [];
+var curr_illnesses = new Array;
 game_start();
 	//var audio = new Audio('sss_theme.mp3');
 
@@ -121,9 +121,9 @@ function create_illness() {
 	for (i = 0; i < s_length; i++) {
 		var c = colors[Math.floor(Math.random() * colors.length)];
 		arr_illnesses.push(c);
-	}	
+	}
+	curr_illnesses = arr_illnesses;	
 	return arr_illnesses;
-	
 }
 
 function shuffle(array) {
@@ -147,40 +147,52 @@ function tell_illnesses(illnesses) {
 	$('#speech_bubble').show();
 	
 	i = 0;
-	
-		$('#symptom').css("background-image" , "url("+illnesses[i].image+")" );
-		var repeat = setInterval(function(){
+		
+	var repeat = setInterval(function(){
+			
+			
 			if(i < illnesses.length){
-				$('#symptom').css("background-image" , "none" );
 				$('#symptom').css("background-image" , "url("+illnesses[i].image+")" );
-			}
-			if(i == illnesses.length){
-				clearInterval(repeat);
 				setTimeout(function(){
 					$('#symptom').css("background-image" , "none" );
+					i++;
+				},1000);
+				
+			}
+			if(i == illnesses.length){
+				setTimeout(function(){
+					//$('#symptom').css("background-image" , "none" );
 					$('#speech_bubble').hide();
 					create_medicine(illnesses);
-				},2000);
+				},1000);
+				clearInterval(repeat);
 			}
-			++i;
-		}, 2000);
+			
+			
+	}, 2000);
+	
+
 	
 }
 
 function create_medicine(illnesses){
+	
 	var shelves = ["#option-1 .code-wrap","#option-2 .code-wrap","#option-3 .code-wrap"];
-	var correct = shelves[Math.floor(Math.random() * shelves.length)];
-	curr_illnesses = illnesses;
+	var correct_self = shelves[Math.floor(Math.random() * shelves.length)];
+	
+	var uncorrects = [];
+	var uncorrects = illnesses.slice();
+	
 	illnesses.forEach(function(illness) { 
-		$(correct).append("<div class='color-code' id='id"+illness.code+"' style='background-color:"+illness.code+"'></div>" );
+		$(correct_self).append("<div class='color-code' id='id"+illness.code+"' style='background-color:"+illness.code+"'></div>" );
 	}
 	);
 	
 	shelves.forEach(function(self) {  
-		if(self != correct){
-			illnesses = shuffle(illnesses);
-			illnesses.forEach(function(illness) {  
-					$(self).append( "<div class='color-code'  id='id"+illness.code+"' style='background-color:"+illness.code+"'></div>" );
+		if(self != correct_self){
+			uncorrects = shuffle(uncorrects);
+			uncorrects.forEach(function(uncorrect) {  
+					$(self).append( "<div class='color-code'  id='id"+uncorrect.code+"' style='background-color:"+uncorrect.code+"'></div>" );
 			});
 			
 		}
@@ -207,26 +219,33 @@ function create_owner() {
 }
 
 	$(".syringe").click(function(){
+			
 		var codes = $(this).siblings(".code-wrap").children();
-		console.log(codes);
-		error = false;
+	
+		ok = true;
 		i=0;
-		while(!error && i< curr_illnesses.length){
+		
+		while(ok && i< curr_illnesses.length){
 			id = codes.eq(i).attr('id');
 			id = id.replace('id','');
-			console.log(id)
-			if(curr_illnesses[i].code != id){
-				error = true;
+			
+			if(curr_illnesses[i].code === id){
+				ok = true;
 			}
+			else{
+				ok = false;
+			}
+			
 			i++;
 		}
 		
-		if(!error){
+		if(ok){
 			alert("ok");
 		}
 		else{
 			alert("error");
 		}
+		//curr_illnesses = [];
 	});
 		
 });
