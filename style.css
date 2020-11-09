@@ -1,6 +1,6 @@
 /*@font-face {font-family: 'Pixeled'; src: url('Pixeled.eot?#iefix') format('embedded-opentype'), url('Pixeled.woff') format('woff'), url('Pixeled.ttf')  format('truetype'),url("Pixeled.eot") format("eot")}*/
 
-@font-face {font-family: 'fff-forward'; src: url('fff-forward/FFFFORWA.ttf')  format('truetype')}
+@font-face {font-family: 'fff-forward'; src: url('./fff-forward/FFFFORWA.ttf')  format('truetype')}
 #maincontainer { width:900px; height:600px;overflow:hidden;margin:auto;background-color:#e8e8e8; background-repeat: no-repeat;display:none;}
 #gamecontainer { width:900px; height:600px; overflow:hidden;position:relative;}
 /*banner{width:360px; height:45px; background-image: url("images/banner.gif");background-position: center; position:absolute; top:10px;left:10px;}*/
