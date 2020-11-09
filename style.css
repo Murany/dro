@@ -7,9 +7,13 @@
 #header{width:900px; height:157px; background-image: url("images/header.png");background-position: center; }
 #cross{width:129px; height:129px; background-image: url("images/cross.png");background-position: center; position:absolute; left:383px; top: 13px;}
 #values{z-index:2; position: absolute; top: 10px; left:582px;font-family: 'fff-forward';font-size:36px; }
-#time-limit{width:129px; height:129px; position:absolute; left:383px; top: 155px; font-family: 'fff-forward';font-size:36px;color:#178e64;text-align:center;display:none;}
+#time-limit,#start-next{width:129px; height:129px; position:absolute; left:383px; top: 155px; font-family: 'fff-forward';font-size:36px;color:#178e64;text-align:center;display:none;}
+#start-next:hover{cursor: pointer;color:#ffffff;}
 #lvl-label, #money-label{color:#ffffff; z-index:2;}
 #lvl-value, #money-value{color:#178e64; z-index:2; }
+#money-change{position: relative;left: 187px;top: 7px; color:#ffffff;}
+#game-mode{position: absolute;right: 7px;top: 7px; color:#ffffff;font-family: 'fff-forward';font-size:20px;cursor:pointer;}
+#game-mode:hover{color:#178e64;}
 
 #dro{width:70px; height:231px; background-image: url("images/dro.png");position:absolute;left: 410px;top: 320px; }
 #cabinet{width:182px; height:322px; background-image: url("images/cabinet.png");position:absolute;left: 172px;top: 229px; }
@@ -20,16 +24,16 @@
 .color-code{width:14px;height:14px;float:left;}
 #floor {width:100%; height:49px; position: Absolute; bottom: 0px; background-image: url("images/floor-bg-tile.png");  background-repeat: repeat-x; }
 
-#speech_bubble{width:84px; height:56px; background-image: url("images/speech_bubble.png");position:absolute;left: 620px;top: 280px; display:none;}
+#speech_bubble{width:77px; height:63px; background-image: url("images/speech_bubble.png"); margin-bottom:7px;display:none;}
 #symptom{width:49px; height:35px; background-position:center; position: relative; top: 6px; left: 14px;}
 #customer{position:absolute; bottom: 49px;}
 #pet{float: left; background-position:bottom; background-repeat:no-repeat;}
 #pet-wrap{position: absolute; bottom: 0;left: 0;}
 #owner{float: left;}
 #selected-syringe{position:relative;background-image:url("images/syringe.png");width:140px; height:35px;top: 112px;left: 21px; display:none;}
-#owner-head{position:relative; background-position:bottom;}
-#owner-torso{position:relative; z-index: 100; background-position:bottom;}
-#owner-legs{position:relative; z-index: 0; background-position:bottom;}
+#owner-head{position:relative; background-position:center;margin:auto;}
+#owner-torso{position:relative; z-index: 100; background-position:center;}
+#owner-legs{position:relative; z-index: 0; background-position:center;}
 
 /*
 #richard { width:86px; height:200px;position: absolute;left: 40px;top: 258px; }#richard:hover{cursor: pointer; }
@@ -45,4 +49,4 @@
 #death{width:68px; height:60px; position: absolute; left: 398px;top: 390px; display:none; }
 
 #musicbutton{color:#ffd7b5; z-index:2; position: absolute; top: 461px; left:310px;font-family: 'Pixeled';font-size:20px; }#musicbutton:hover{cursor: pointer;color:white; }
-#loading p {color:#ffd7b5; font-family: 'Pixeled';font-size:20px; text-align:center;}*/s
+#loading p {color:#ffd7b5; font-family: 'Pixeled';font-size:20px; text-align:center;}*/
