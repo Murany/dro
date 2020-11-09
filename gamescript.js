@@ -104,6 +104,7 @@ function game_start() {
 	create_customer();
 }
 function create_illness() {
+	
 	var s_length = 0;
 	var milliseconds = 0;
 	var last_color = "";
@@ -133,7 +134,7 @@ function create_illness() {
 	time_limit = new Date(milliseconds);
 	
 	curr_illnesses = arr_illnesses;	
-	return arr_illnesses;
+	tell_illnesses(arr_illnesses);
 }
 
 function shuffle(array) {
@@ -258,9 +259,17 @@ function create_customer() {
 	$('#pet-wrap').css("left" , "-"+pet.width+"px");
 	var customer_width = $('#customer').width();
 	$('#customer').css("left" , (game_container_width+pet.width+owner_width)-customer_width+"px");
-	$("#customer").animate({left: '-=280'}, 3300);
-	var illnesses = create_illness();
-	tell_illnesses(illnesses);
+	//$("#customer").animate({left: '-=280'}, 3300, "linear",create_illness());
+	
+	
+	$( "#customer" ).animate({
+    left: "-=280",}, {duration: 3300,specialEasing: {width: "linear"},
+		complete: function() {
+		  create_illness()
+		}
+	});
+	
+	//var illnesses = create_illness();
 		
 }
 
