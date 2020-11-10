@@ -1,18 +1,25 @@
 /*@font-face {font-family: 'Pixeled'; src: url('Pixeled.eot?#iefix') format('embedded-opentype'), url('Pixeled.woff') format('woff'), url('Pixeled.ttf')  format('truetype'),url("Pixeled.eot") format("eot")}*/
 
 @font-face {font-family: 'fff-forward'; src: url('FFFFORWA.TTF')  format('truetype')}
+
 #maincontainer { width:900px; height:600px;overflow:hidden;margin:auto;background-color:#e8e8e8; background-repeat: no-repeat;display:none;}
-#gamecontainer { width:900px; height:600px; overflow:hidden;position:relative;}
+#gamecontainer { width:900px; height:600px; overflow:hidden;position:relative;font-family: 'fff-forward';}
+h1{position:absolute;top:10px;left:7px;margin:0px;font-size: 34px; }
+h1 span {margin-left:7px;}
+h1 span:nth-child(1) {color:#ffffff;}
+h1 span:nth-child(2) {color:#21e19d;}
+h1 span:nth-child(3) {color:#178e64;}
 /*banner{width:360px; height:45px; background-image: url("images/banner.gif");background-position: center; position:absolute; top:10px;left:10px;}*/
 #header{width:900px; height:157px; background-image: url("images/header.png");background-position: center; }
 #cross{width:129px; height:129px; background-image: url("images/cross.png");background-position: center; position:absolute; left:383px; top: 13px;}
-#values{z-index:2; position: absolute; top: 10px; left:582px;font-family: 'fff-forward';font-size:36px; }
-#time-limit,#start-next{width:129px; height:129px; position:absolute; left:383px; top: 155px; font-family: 'fff-forward';font-size:36px;color:#178e64;text-align:center;display:none;}
+#values{z-index:2; position: absolute; top: 10px; left:582px;font-size:36px; }
+#time-limit,#start-next{width:129px; height:129px; position:absolute; left:383px; top: 155px;font-size:36px;color:#178e64;text-align:center;display:none;}
+#start-next{height:auto;}
 #start-next:hover{cursor: pointer;color:#ffffff;}
 #lvl-label, #money-label{color:#ffffff; z-index:2;}
 #lvl-value, #money-value{color:#178e64; z-index:2; }
 #money-change{position: relative;left: 187px;top: 7px; color:#ffffff;}
-#game-mode{position: absolute;right: 7px;top: 7px; color:#ffffff;font-family: 'fff-forward';font-size:20px;cursor:pointer;}
+#game-mode{position: absolute;right: 7px;top: 7px; color:#ffffff;font-size:20px;cursor:pointer;}
 #game-mode:hover{color:#178e64;}
 
 #dro{width:70px; height:231px; background-image: url("images/dro.png");position:absolute;left: 410px;top: 320px; }

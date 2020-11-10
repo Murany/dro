@@ -83,7 +83,7 @@ var lvl = 0;
 var game_mode = "auto";
 var time_limit = null;
 var time_repeat = null;
-var pets = [{image:"images/pets/cat1.png",width:119,height:105}, {image:"images/pets/dog1.png",width:140,height:122}];
+var pets = [{image:"images/pets/cat1.png",width:119,height:105}, {image:"images/pets/dog1.png",width:140,height:122}, {image:"images/pets/horse1.png",width:245,height:280},{image:"images/pets/giraffe.png",width:252,height:469}];
 var ownerheads = [{image:"images/heads/o_h1.png",width:63,height:78}, {image:"images/heads/o_h2.png",width:35,height:56}, {image:"images/heads/o_h3.png",width:49,height:56}];
 var ownertorsos = [{image:"images/torsos/o_t1.png",width:63,height:81,cutoff:18}, {image:"images/torsos/o_t2.png",width:63,height:70}, {image:"images/torsos/o_t3.png",width:63,height:63,cutoff:7}];
 var ownerlegs = [{image:"images/legs/o_l1.png",width:63,height:105}, {image:"images/legs/o_l2.png",width:57,height:105}, {image:"images/legs/o_l3.png",width:63,height:84}];	
@@ -145,7 +145,7 @@ function create_money(){
 		max = 150;
 	}
 	
-	return Math.floor(Math.random() * max) + 1 
+	return Math.floor(Math.random() * max) + 10 
 }
 function create_illness() {
 	
@@ -155,21 +155,21 @@ function create_illness() {
 	var arr_illnesses = [];
 	if(lvl < 3){
 		s_length = 3;
-		milliseconds = 50000
+		milliseconds = 40000
 	}
 	else if(6 >lvl >3 )
 	{
 		s_length = 5;
-		milliseconds = 40000
+		milliseconds = 30000
 	}
 	else if(9 >lvl >6 )
 	{
 		s_length = 7;
-		milliseconds = 30000
+		milliseconds = 20000
 	}
 	else{
 		s_length = 9;
-		milliseconds = 20000
+		milliseconds = 15000
 	}
 	for (i = 0; i < s_length; i++) {
 		var c = colors[Math.floor(Math.random() * colors.length)];
@@ -203,6 +203,7 @@ function shuffle(array) {
 }
 
 function start_timer(){
+	$("#time-limit").html(time_limit.getMinutes()+":"+time_limit.getSeconds());
 	$('#time-limit').show();
 	time_repeat = setInterval(function(){
 		if(time_limit.getTime() > 0 ){
@@ -321,7 +322,7 @@ function create_medicine(illnesses){
 }
 
 function create_customer() {
-	var pet = pets[Math.floor(Math.random() * pets.length)];
+	var pet = pets[3];//pets[Math.floor(Math.random() * pets.length)];
 	var head = ownerheads[Math.floor(Math.random() * ownerheads.length)];
 	var torso = ownertorsos[Math.floor(Math.random() * ownertorsos.length)];
 	var legs = ownerlegs[Math.floor(Math.random() * ownerlegs.length)];
@@ -393,7 +394,9 @@ function create_customer() {
 		}
 		clearInterval(time_repeat);
 		$('#time-limit').hide();
-		move_costumer(curr_customer.pixels_to_reach,true);
+		setTimeout(function(){
+			move_costumer(curr_customer.pixels_to_reach,true);
+		},1000);
 	});
 		
 });
