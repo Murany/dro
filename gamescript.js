@@ -80,6 +80,7 @@ $(document).ready(function(){
 });*/
 var money = 0;
 var lvl = 0;
+var customer_num = 0;
 var game_mode = "auto";
 var time_limit = null;
 var time_repeat = null;
@@ -118,6 +119,10 @@ function create_padded_string(str,padStr, len) {
 	return str;
 }
 
+function set_lvl(){
+	var padded = create_padded_string(lvl.toString(),"0",2);
+	$("#lvl-value").html(padded);
+}
 
 function set_money(amount,addition){
 	var sign = (addition)?"+":"-";
@@ -322,7 +327,11 @@ function create_medicine(illnesses){
 }
 
 function create_customer() {
-	var pet = pets[3];//pets[Math.floor(Math.random() * pets.length)];
+	if(customer_num%5==0){
+		lvl++;
+		set_lvl();
+	}
+	var pet = 	pets[Math.floor(Math.random() * pets.length)];
 	var head = ownerheads[Math.floor(Math.random() * ownerheads.length)];
 	var torso = ownertorsos[Math.floor(Math.random() * ownertorsos.length)];
 	var legs = ownerlegs[Math.floor(Math.random() * ownerlegs.length)];
@@ -346,12 +355,8 @@ function create_customer() {
 	curr_customer.pixels_to_reach = pixels_to_reach;
 	curr_customer.money = create_money();
 	move_costumer(pixels_to_reach,false);
-	/*$( "#customer" ).animate({
-    left: "-="+pixels_to_reach}, {duration: 3300,specialEasing: {width: "linear"},
-		complete: function() {
-		  create_illness()
-		}
-	});*/
+	
+	customer_num++;
 		
 }
 	$("#start-next").click(function(){
