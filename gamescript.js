@@ -82,17 +82,37 @@ var money = 0;
 var lvl = 0;
 var customer_num = 0;
 var game_mode = "auto";
+var can_click = false;
 var time_limit = null;
 var time_repeat = null;
-var pets = [{image:"images/pets/cat1.png",width:119,height:105}, {image:"images/pets/dog1.png",width:140,height:122}, {image:"images/pets/horse1.png",width:245,height:280},{image:"images/pets/giraffe.png",width:252,height:469}];
+var pets = [{image:"images/pets/cat1.png",width:119,height:105,w1:"images/pets/cat1w1.png",w2:"images/pets/cat1w2.png"}, 
+			{image:"images/pets/dog1.png",width:140,height:122,w1:"images/pets/dog1w1.png",w2:"images/pets/dog1w2.png"}, 
+			{image:"images/pets/horse1.png",width:245,height:280},
+			{image:"images/pets/giraffe.png",width:252,height:469}];
 var ownerheads = [{image:"images/heads/o_h1.png",width:63,height:78}, {image:"images/heads/o_h2.png",width:35,height:56}, {image:"images/heads/o_h3.png",width:49,height:56}];
-var ownertorsos = [{image:"images/torsos/o_t1.png",width:63,height:81,cutoff:18}, {image:"images/torsos/o_t2.png",width:63,height:70}, {image:"images/torsos/o_t3.png",width:63,height:63,cutoff:7}];
-var ownerlegs = [{image:"images/legs/o_l1.png",width:63,height:105}, {image:"images/legs/o_l2.png",width:57,height:105}, {image:"images/legs/o_l3.png",width:63,height:84}];	
+var ownertorsos = [{image:"images/torsos/o_t1.png",width:63,height:81,cutoff:18},
+				   {image:"images/torsos/o_t2.png",width:63,height:70}, 
+				   {image:"images/torsos/o_t3.png",width:63,height:63,cutoff:7}];
+var ownerlegs = [{image:"images/legs/o_l1.png",width:63,height:105,w1:"images/legs/o_l1_w1.png",w2:"images/legs/o_l1_w2.png"}, 
+				 {image:"images/legs/o_l2.png",width:57,height:105,w1:"images/legs/o_l2.png",w2:"images/legs/o_l2_w2.png"},
+				 {image:"images/legs/o_l3.png",width:63,height:84,w1:"images/legs/o_l3_w1.png",w2:"images/legs/o_l3_w2.png"}];	
 var colors = [{image:"images/s_red.png",code:"#c43810"}, {image:"images/s_black.png",code:"#000000"},  {image:"images/s_blue.png",code:"#1747ba"},  {image:"images/s_green.png",code:"#36b60f"}, {image:"images/s_orange.png",code:"#d06612"} ];
 var curr_illnesses = new Array;
 var curr_customer = {
 	pixels_to_reach : 0,
 	money:0,
+};
+var curr_owner = {
+	walking:false,
+	stand:"",
+	walk1:"",
+	walk2:""
+};
+var curr_pet = {
+	walking:false,
+	stand:"",
+	walk1:"",
+	walk2:""
 };
 game_start();
 	//var audio = new Audio('sss_theme.mp3');
@@ -158,16 +178,16 @@ function create_illness() {
 	var milliseconds = 0;
 	var last_color = null;
 	var arr_illnesses = [];
-	if(lvl < 3){
+	if(lvl <= 3){
 		s_length = 3;
 		milliseconds = 40000
 	}
-	else if(6 >lvl >3 )
+	else if(6 >= lvl >3 )
 	{
 		s_length = 5;
 		milliseconds = 30000
 	}
-	else if(9 >lvl >6 )
+	else if(9 >= lvl >6 )
 	{
 		s_length = 7;
 		milliseconds = 20000
@@ -176,7 +196,7 @@ function create_illness() {
 		s_length = 9;
 		milliseconds = 15000
 	}
-	for (i = 0; i < s_length; i++) {
+	while (arr_illnesses.length != s_length) {
 		var c = colors[Math.floor(Math.random() * colors.length)];
 		if (c !== last_color){
 			arr_illnesses.push(c);
@@ -224,9 +244,42 @@ function start_timer(){
 		}
 	},1000);
 }
-
+function animate_pet(){
+	pet_time_repeat = setInterval(function(){
+		if( curr_pet.walking ){
+			
+			$('#pet').css({"background-image" : "url("+curr_pet.walk1+")"});
+			setTimeout(function(){
+					$('#pet').css({"background-image" : "url("+curr_pet.walk2+")"});
+				},300);
+		}
+		else{
+			clearInterval(pet_time_repeat);
+			$('#pet').css({"background-image" : "url("+curr_pet.stand+")"});
+		}
+	},600);
+}
+function animate_owner(){
+	owner_time_repeat = setInterval(function(){
+		if( curr_owner.walking ){
+			
+			$('#owner-legs').css({"background-image" : "url("+curr_owner.walk1+")"});
+			setTimeout(function(){
+					$('#owner-legs').css({"background-image" : "url("+curr_owner.walk2+")"});
+				},300);
+		}
+		else{
+			clearInterval(owner_time_repeat);
+			$('#owner-legs').css({"background-image" : "url("+curr_owner.stand+")"});
+		}
+	},600);
+}
 function move_costumer(amount,positive){
 	
+	curr_pet.walking = true;
+	curr_owner.walking = true;
+	animate_pet();
+	animate_owner();	
 	var string_val = ((positive)?"+":"-")+"=";
 	if(positive){ //leaving
 		$('.bg-to-flip').each(function( index ) {
@@ -255,6 +308,8 @@ function move_costumer(amount,positive){
 				}
 				},2500);
 			}
+			curr_pet.walking=false;
+			curr_owner.walking=false;
 		}
 	});
 	
@@ -295,8 +350,6 @@ function tell_illnesses(illnesses) {
 			
 	}, 2000);
 	
-
-	
 }
 
 function create_medicine(illnesses){
@@ -322,6 +375,7 @@ function create_medicine(illnesses){
 		}
 	});
 	$('.syringe').show();
+	can_click = true;
 	start_timer();
 	
 }
@@ -331,7 +385,7 @@ function create_customer() {
 		lvl++;
 		set_lvl();
 	}
-	var pet = 	pets[Math.floor(Math.random() * pets.length)];
+	var pet = pets[Math.floor(Math.random() * pets.length)];
 	var head = ownerheads[Math.floor(Math.random() * ownerheads.length)];
 	var torso = ownertorsos[Math.floor(Math.random() * ownertorsos.length)];
 	var legs = ownerlegs[Math.floor(Math.random() * ownerlegs.length)];
@@ -352,6 +406,15 @@ function create_customer() {
 	$('#customer').css("left" , (game_container_width+pet.width+owner_width)-customer_width+"px");
 	var total_width = pet.width+customer_width;
 	var pixels_to_reach = (game_container_width-571); //571 is the tip of the selected syringe;
+	
+	curr_pet.walk1 = pet.w1;
+	curr_pet.walk2 = pet.w2;
+	curr_pet.stand = pet.image;
+	
+	curr_owner.walk1 = legs.w1;
+	curr_owner.walk2 = legs.w2;
+	curr_owner.stand = legs.image;
+	
 	curr_customer.pixels_to_reach = pixels_to_reach;
 	curr_customer.money = create_money();
 	move_costumer(pixels_to_reach,false);
@@ -369,39 +432,41 @@ function create_customer() {
 		$("#game-mode").html("mode: "+game_mode);
 	});
 	$(".syringe").click(function(){
+		if(can_click){
+			can_click = false;
+			var codes = $(this).siblings(".code-wrap").children();
+			$(this).siblings().css("display","none");
+			$(this).css("background-image","none");
+			$("#selected-syringe").show();
+			ok = true;
+			i=0;
 			
-		var codes = $(this).siblings(".code-wrap").children();
-		$(this).siblings().css("display","none");
-		$(this).css("background-image","none");
-		$("#selected-syringe").show();
-		ok = true;
-		i=0;
-		
-		while(ok && i< curr_illnesses.length){
-			id = codes.eq(i).attr('id');
-			id = id.replace('id','');
+			while(ok && i< curr_illnesses.length){
+				id = codes.eq(i).attr('id');
+				id = id.replace('id','');
+				
+				if(curr_illnesses[i].code === id){
+					ok = true;
+				}
+				else{
+					ok = false;
+				}
+				
+				i++;
+			}
 			
-			if(curr_illnesses[i].code === id){
-				ok = true;
+			if(ok){
+				set_money(curr_customer.money,true);
 			}
 			else{
-				ok = false;
+				set_money(curr_customer.money,false);
 			}
-			
-			i++;
+			clearInterval(time_repeat);
+			$('#time-limit').hide();
+			setTimeout(function(){
+				move_costumer(curr_customer.pixels_to_reach,true);
+			},1000);
 		}
-		
-		if(ok){
-			set_money(curr_customer.money,true);
-		}
-		else{
-			set_money(curr_customer.money,false);
-		}
-		clearInterval(time_repeat);
-		$('#time-limit').hide();
-		setTimeout(function(){
-			move_costumer(curr_customer.pixels_to_reach,true);
-		},1000);
 	});
 		
 });
