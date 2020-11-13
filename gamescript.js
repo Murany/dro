@@ -86,16 +86,27 @@ var can_click = false;
 var time_limit = null;
 var time_repeat = null;
 var pets = [{image:"images/pets/cat1.png",width:119,height:105,w1:"images/pets/cat1w1.png",w2:"images/pets/cat1w2.png"}, 
-			{image:"images/pets/dog1.png",width:140,height:122,w1:"images/pets/dog1w1.png",w2:"images/pets/dog1w2.png"}, 
-			{image:"images/pets/horse1.png",width:245,height:280},
-			{image:"images/pets/giraffe.png",width:252,height:469}];
-var ownerheads = [{image:"images/heads/o_h1.png",width:63,height:78}, {image:"images/heads/o_h2.png",width:35,height:56}, {image:"images/heads/o_h3.png",width:49,height:56}];
+			{image:"images/pets/dog1.png",width:140,height:122,w1:"images/pets/dog1w1.png",w2:"images/pets/dog1w2.png"},
+			{image:"images/pets/rabbit.png",width:91,height:77,w1:"images/pets/rabbitw1.png",w2:"images/pets/rabbitw2.png"}, 
+			{image:"images/pets/horse1.png",width:245,height:280,w1:"images/pets/horse1w1.png",w2:"images/pets/horse1w2.png"}, 
+			{image:"images/pets/giraffe.png",width:252,height:469,w1:"images/pets/giraffew1.png",w2:"images/pets/giraffew2.png"},
+			{image:"images/pets/dog2.png",width:98,height:105,w1:"images/pets/dog2w1.png",w2:"images/pets/dog2w2.png"},
+			{image:"images/pets/ostrich.png",width:182,height:273,w1:"images/pets/ostrichw1.png",w2:"images/pets/ostrichw2.png"},
+			{image:"images/pets/shark.png",width:220,height:245,w1:"images/pets/sharkw1.png",w2:"images/pets/sharkw2.png"},
+			{image:"images/pets/lion.png",width:217,height:196,w1:"images/pets/lionw1.png",w2:"images/pets/lionw2.png"}
+			];
+var ownerheads = [{image:"images/heads/o_h1.png",width:63,height:78}, 
+				  {image:"images/heads/o_h2.png",width:35,height:56}, 
+				  {image:"images/heads/o_h3.png",width:49,height:56},
+				  {image:"images/heads/o_h4.png",width:35,height:56}];
 var ownertorsos = [{image:"images/torsos/o_t1.png",width:63,height:81,cutoff:18},
 				   {image:"images/torsos/o_t2.png",width:63,height:70}, 
-				   {image:"images/torsos/o_t3.png",width:63,height:63,cutoff:7}];
+				   {image:"images/torsos/o_t3.png",width:63,height:63,cutoff:7},
+				   {image:"images/torsos/o_t4.png",width:63,height:74,cutoff:14}];
 var ownerlegs = [{image:"images/legs/o_l1.png",width:63,height:105,w1:"images/legs/o_l1_w1.png",w2:"images/legs/o_l1_w2.png"}, 
-				 {image:"images/legs/o_l2.png",width:57,height:105,w1:"images/legs/o_l2.png",w2:"images/legs/o_l2_w2.png"},
-				 {image:"images/legs/o_l3.png",width:63,height:84,w1:"images/legs/o_l3_w1.png",w2:"images/legs/o_l3_w2.png"}];	
+				 {image:"images/legs/o_l2.png",width:57,height:105,w1:"images/legs/o_l2_w1.png",w2:"images/legs/o_l2_w2.png"},
+				 {image:"images/legs/o_l3.png",width:63,height:84,w1:"images/legs/o_l3_w1.png",w2:"images/legs/o_l3_w2.png"},
+				 {image:"images/legs/o_l4.png",width:63,height:98,w1:"images/legs/o_l4_w1.png",w2:"images/legs/o_l4_w2.png"}];	
 var colors = [{image:"images/s_red.png",code:"#c43810"}, {image:"images/s_black.png",code:"#000000"},  {image:"images/s_blue.png",code:"#1747ba"},  {image:"images/s_green.png",code:"#36b60f"}, {image:"images/s_orange.png",code:"#d06612"} ];
 var curr_illnesses = new Array;
 var curr_customer = {
@@ -114,6 +125,7 @@ var curr_pet = {
 	walk1:"",
 	walk2:""
 };
+var last_pet = null;
 game_start();
 	//var audio = new Audio('sss_theme.mp3');
 
@@ -385,7 +397,11 @@ function create_customer() {
 		lvl++;
 		set_lvl();
 	}
-	var pet = pets[Math.floor(Math.random() * pets.length)];
+	
+	var pet = null;
+	while(pet == null && pet == last_pet){
+		pet = pets[Math.floor(Math.random() * pets.length)];
+	}
 	var head = ownerheads[Math.floor(Math.random() * ownerheads.length)];
 	var torso = ownertorsos[Math.floor(Math.random() * ownertorsos.length)];
 	var legs = ownerlegs[Math.floor(Math.random() * ownerlegs.length)];
@@ -438,6 +454,12 @@ function create_customer() {
 			$(this).siblings().css("display","none");
 			$(this).css("background-image","none");
 			$("#selected-syringe").show();
+			setTimeout(function(){
+				$("#syringe-effect").show();
+				setTimeout(function(){
+					$("#syringe-effect").hide();
+				},500);
+			},500);
 			ok = true;
 			i=0;
 			

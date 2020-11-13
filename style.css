@@ -38,6 +38,7 @@ h1 span:nth-child(3) {color:#178e64;}
 #pet-wrap{position: absolute; bottom: 0;left: 0;}
 #owner{float: left;}
 #selected-syringe{position:relative;background-image:url("images/syringe.png");width:140px; height:35px;top: 112px;left: 21px; display:none;}
+#syringe-effect{position:relative;background-image:url("images/syringe-effect.png");width:35px; height:35px;top: 77px;left: 147px; background-repeat:no-repeat; display:none;}
 #owner-head{position:relative; background-position:center;margin:auto;}
 #owner-torso{position:relative; z-index: 100; background-position:center;}
 #owner-legs{position:relative; z-index: 0; background-position:center;}
