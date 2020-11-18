@@ -92,6 +92,7 @@ var pets = [{image:"images/pets/cat1.png",width:119,height:105,w1:"images/pets/c
 			{image:"images/pets/giraffe.png",width:252,height:469,w1:"images/pets/giraffew1.png",w2:"images/pets/giraffew2.png"},
 			{image:"images/pets/dog2.png",width:98,height:105,w1:"images/pets/dog2w1.png",w2:"images/pets/dog2w2.png"},
 			{image:"images/pets/ostrich.png",width:182,height:273,w1:"images/pets/ostrichw1.png",w2:"images/pets/ostrichw2.png"},
+			{image:"images/pets/pig.png",width:189,height:91,w1:"images/pets/pigw1.png",w2:"images/pets/pigw2.png"},
 			{image:"images/pets/shark.png",width:220,height:245,w1:"images/pets/sharkw1.png",w2:"images/pets/sharkw2.png"},
 			{image:"images/pets/lion.png",width:217,height:196,w1:"images/pets/lionw1.png",w2:"images/pets/lionw2.png"}
 			];
@@ -239,6 +240,21 @@ function shuffle(array) {
   return array;
 }
 
+/*function color_code_shuffle(corr_array,ref_array) {
+	
+	var return_array = [];
+	var i = 0;
+	while(i < corr_array.length){
+		var index = ownerheads[Math.floor(Math.random() * ownerheads.length)];
+		if(return_array[i].code != corr_array[index].code && return_array[i].code != ref_array[index].code] ){
+			return_array.push(corr_array[index]);
+			i++;
+		}
+	}
+
+  return_array;
+}*/
+
 function start_timer(){
 	$("#time-limit").html(time_limit.getMinutes()+":"+time_limit.getSeconds());
 	$('#time-limit').show();
@@ -370,10 +386,12 @@ function create_medicine(illnesses){
 	var correct_self = shelves[Math.floor(Math.random() * shelves.length)];
 	
 	var uncorrects = [];
-	var uncorrects = illnesses.slice();
+	var uncorrects = illnesses.slice(); // copy the original
+
+	var processed_arrays = [];
 	
 	illnesses.forEach(function(illness) { 
-		$(correct_self).append("<div class='color-code' id='id"+illness.code+"' style='background-color:"+illness.code+"'></div>" );
+		$(correct_self).append("<div class='color-code' id='id"+illness.code+"' style='background-color:"+illness.code+"'></div>" ); //fill the correct self's color codes
 	}
 	);
 	
@@ -383,7 +401,6 @@ function create_medicine(illnesses){
 			uncorrects.forEach(function(uncorrect) {  
 					$(self).append( "<div class='color-code'  id='id"+uncorrect.code+"' style='background-color:"+uncorrect.code+"'></div>" );
 			});
-			
 		}
 	});
 	$('.syringe').show();
@@ -477,17 +494,29 @@ function create_customer() {
 				i++;
 			}
 			
+			
 			if(ok){
 				set_money(curr_customer.money,true);
+				setTimeout(function(){
+					$('#result-bubble').show();
+					$('#result').css("background-image" , "url('images/smiley.png')" );
+				},500);
 			}
 			else{
 				set_money(curr_customer.money,false);
+				setTimeout(function(){
+					$('#result-bubble').show();
+					$('#result').css("background-image" , "url('images/frown.png')" );
+				},500);
 			}
 			clearInterval(time_repeat);
 			$('#time-limit').hide();
 			setTimeout(function(){
+				$('#result').css("background-image" , "none" );
+				$('#result-bubble').hide();
 				move_costumer(curr_customer.pixels_to_reach,true);
-			},1000);
+				
+			},1500);
 		}
 	});
 		
