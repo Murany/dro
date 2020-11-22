@@ -93,6 +93,8 @@ var pets = [{image:"images/pets/cat1.png",width:119,height:105,w1:"images/pets/c
 			{image:"images/pets/dog2.png",width:98,height:105,w1:"images/pets/dog2w1.png",w2:"images/pets/dog2w2.png"},
 			{image:"images/pets/ostrich.png",width:182,height:273,w1:"images/pets/ostrichw1.png",w2:"images/pets/ostrichw2.png"},
 			{image:"images/pets/pig.png",width:189,height:91,w1:"images/pets/pigw1.png",w2:"images/pets/pigw2.png"},
+			{image:"images/pets/goat.png",width:133,height:133,w1:"images/pets/goatw1.png",w2:"images/pets/goatw2.png"},
+			{image:"images/pets/sneak.png",width:196,height:224,w1:"images/pets/sneakw1.png",w2:"images/pets/sneak.png"},
 			{image:"images/pets/shark.png",width:220,height:245,w1:"images/pets/sharkw1.png",w2:"images/pets/sharkw2.png"},
 			{image:"images/pets/lion.png",width:217,height:196,w1:"images/pets/lionw1.png",w2:"images/pets/lionw2.png"}
 			];
@@ -415,10 +417,12 @@ function create_customer() {
 		set_lvl();
 	}
 	
-	var pet = null;
-	while(pet == null && pet == last_pet){
+	pet = pets[Math.floor(Math.random() * pets.length)];
+	while (pet == last_pet) {
 		pet = pets[Math.floor(Math.random() * pets.length)];
 	}
+	last_pet = pet;
+	
 	var head = ownerheads[Math.floor(Math.random() * ownerheads.length)];
 	var torso = ownertorsos[Math.floor(Math.random() * ownertorsos.length)];
 	var legs = ownerlegs[Math.floor(Math.random() * ownerlegs.length)];
@@ -521,115 +525,3 @@ function create_customer() {
 	});
 		
 });
-	/*
-    $("#richard").click(function(){
-		if (canstartconvo==1 && ending != 1){
-			canstartconvo=0;
-			$("#butidontloveyou").hide();
-			if (drunk == 1)
-			{
-				$("#drunktalk").show();
-			}
-			else{
-        $("#loveyouforever").show();
-		}
-	
-	setTimeout(function(){
-		$("#loveyouforever").hide();	
-		$("#drunktalk").hide();	
-		$("#butidontloveyou").show();
-		
-			setTimeout(function(){
-			$("#butidontloveyou").hide();
-			canstartconvo=1;
-			}, 2000); 
-		}, 2000); 
-		}
-    });
-	
-	$("#anita").click(function(){
-	if (canstartconvo!=0 && ending != 1){
-	$("#butidontloveyou").show();
-		
-			setTimeout(function(){
-			$("#butidontloveyou").hide();
-			}, 2000); 
-	}
-	});
-	
-	$("#bastard").click(function(){
-	if (canstartconvo!=0){
-	$("#nothing").show();
-		
-			setTimeout(function(){
-			$("#nothing").hide();
-			}, 2000); 
-	}
-	});
-	
-	
-	$("#ladder").click(function(){
-			
-			canstartconvo=0;
-			drunk=0;
-			ending=1;
-			if (!$('#richard').css("background-image", "url(images/richard.gif)"))
-			{$("#drunkstars").hide(); $('#richard').css("background-image", "url(images/richard.gif)"); }
-		
-			$('#ladder').css("width", "138px"); 
-			$('#ladder').css("background-image", "url(images/ladderfall.gif)");  
-		
-			setTimeout(function(){
-			$("#ladder").hide();
-			}, 1000); 
-			
-			setTimeout(function(){
-			$('#bastard').css("background-image", "url(images/bastardfall.gif)");
-			$("#moneymoneymoney").hide();
-			$("#bastard").animate({left: '+=500', top: '+=1200'}, 2300);
-			}, 300); 
-			
-			setTimeout(function(){
-			$("#death").show();
-			}, 1500); 
-			setTimeout(function(){
-			$("#death").hide();
-			}, 2500);
-			
-			setTimeout(function(){
-			$('#richard').css("background-image", "url(images/richardwalk.gif)");
-			$("#richard").animate({left: '+=140'}, 2300);
-			$("#richard").css("z-index", 1);
-			$('#anita').css("background-image", "url(images/anitawalk.gif)");
-			$("#anita").animate({left: '-=80'}, 2300);
-			$("#anita").css("z-index", 0);
-			}, 2800);
-			
-			setTimeout(function(){
-			$("#drink").hide();
-			$('#richard').css("width", "78px"); 
-			$('#richard').css("background-image", "url(images/richardhappy.png)");
-			
-			$('#anita').css("width", "68px"); 
-			$('#anita').css("background-image", "url(images/anitahappy.png)");
-			$('#gamecontainer').css("background-image", "none");
-			$('#maincontainer').css("background-image", "url(images/loveforever.gif)");
-			$('body').css("background-color", "#feb3b3");
-			}, 4600);
-			
-			setTimeout(function(){
-			$( "#gamecontainer" ).append( "<div id='babies'></div>" );
-			}, 5600);
-			
-	});
-			
-			$("#musicbutton").click(function(){
-				if (!audio.paused)
-				{
-				audio.pause();
-				$( "#musicbutton" ).text( "Music:Off" );
-				}
-				else
-				{audio.play();$( "#musicbutton" ).text( "Music:On" );}
-			});
-	*/
