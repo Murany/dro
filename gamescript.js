@@ -85,6 +85,10 @@ var game_mode = "auto";
 var can_click = false;
 var time_limit = null;
 var time_repeat = null;
+var akos = {head:{image:"images/heads/akos_h.png",width:49,height:49},
+			torso:{image:"images/torsos/akos_t.png",width:77,height:77,cutoff:7},
+			legs:{image:"images/legs/akos_l.png",width:77,height:91,w1:"images/legs/akos_l_w1.png",w2:"images/legs/akos_l_w2.png"}
+			};
 var pets = [{image:"images/pets/cat1.png",width:119,height:105,w1:"images/pets/cat1w1.png",w2:"images/pets/cat1w2.png"}, 
 			{image:"images/pets/dog1.png",width:140,height:122,w1:"images/pets/dog1w1.png",w2:"images/pets/dog1w2.png"},
 			{image:"images/pets/rabbit.png",width:91,height:77,w1:"images/pets/rabbitw1.png",w2:"images/pets/rabbitw2.png"}, 
@@ -421,12 +425,19 @@ function create_customer() {
 	while (pet == last_pet) {
 		pet = pets[Math.floor(Math.random() * pets.length)];
 	}
+	if(customer_num == 9){ //akos
+		pet = pets[0];  //cat
+	}
 	last_pet = pet;
 	
 	var head = ownerheads[Math.floor(Math.random() * ownerheads.length)];
 	var torso = ownertorsos[Math.floor(Math.random() * ownertorsos.length)];
 	var legs = ownerlegs[Math.floor(Math.random() * ownerlegs.length)];
-	
+	if(customer_num == 9){ //akos
+		head = akos.head; 
+		torso = akos.torso; 
+		legs = akos.legs; 
+	}
 	$('#pet').css({"background-image" : "url("+pet.image+")" , "width" : pet.width , "height" : pet.height});
 	$('#owner-head').css({"background-image" : "url("+head.image+")" , "width" : head.width , "height" : head.height});
 	$('#owner-torso').css({"background-image" : "url("+torso.image+")" , "width" : torso.width , "height" : torso.height});
