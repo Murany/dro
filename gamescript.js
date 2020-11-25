@@ -89,6 +89,10 @@ var akos = {head:{image:"images/heads/akos_h.png",width:49,height:49},
 			torso:{image:"images/torsos/akos_t.png",width:77,height:77,cutoff:7},
 			legs:{image:"images/legs/akos_l.png",width:77,height:91,w1:"images/legs/akos_l_w1.png",w2:"images/legs/akos_l_w2.png"}
 			};
+var assistants = [{width:77,height:217,w1:"images/assistants/assistant1w1.png",w2:"images/assistants/assistants1w2.png"}, 
+				  {width:77,height:231,w1:"images/assistants/assistant2w1.png",w2:"images/assistants/assistant2w2.png"}, ];
+var mini_pets = [{width:69,height:56,iamge:"images/assistants/mini_pet_1.png"}, 
+				 {width:69,height:56,iamge:"images/assistants/mini_pet_2.png"} ];				  
 var pets = [{image:"images/pets/cat1.png",width:119,height:105,w1:"images/pets/cat1w1.png",w2:"images/pets/cat1w2.png"}, 
 			{image:"images/pets/dog1.png",width:140,height:122,w1:"images/pets/dog1w1.png",w2:"images/pets/dog1w2.png"},
 			{image:"images/pets/rabbit.png",width:91,height:77,w1:"images/pets/rabbitw1.png",w2:"images/pets/rabbitw2.png"}, 
@@ -132,6 +136,7 @@ var curr_pet = {
 	walk1:"",
 	walk2:""
 };
+curr_assistant_direction = true;
 var last_pet = null;
 game_start();
 	//var audio = new Audio('sss_theme.mp3');
@@ -293,6 +298,7 @@ function animate_pet(){
 		}
 	},600);
 }
+
 function animate_owner(){
 	owner_time_repeat = setInterval(function(){
 		if( curr_owner.walking ){
@@ -414,7 +420,26 @@ function create_medicine(illnesses){
 	start_timer();
 	
 }
-
+function create_assistant(direction){
+	var assistant = assistants[Math.floor(Math.random() * assistants.length)];
+	var mini_pet = mini_pets[Math.floor(Math.random() * assistants.length)];
+	$('#mini-pet').css({"background-image" : "url("+mini_pet.image+")"});
+	
+	if(direction){ //left-to-right
+		$('#assitant,#mini-pet').css({"-moz-transform" : "scaleX(-1)" , "-o-transform" : "scaleX(-1)" , "transform" : "scaleX(-1)", "filter" :  "FlipH", "-ms-filter":"FlipH"})
+	}
+	else{
+		$('#assitant,#mini-pet').css({"-moz-transform" : "scaleX(1)" , "-o-transform" : "scaleX(1)" , "transform" : "scaleX(1)", "filter" :  "FlipH", "-ms-filter":"FlipH"})
+	}
+	assistant_time_repeat = setInterval(function(){
+		
+		$('#assitant').css({"background-image" : "url("+assistant.walk1+")"});
+		setTimeout(function(){
+				$('#assitant').css({"background-image" : "url("+assistant.walk2+")"});
+			},300);
+		
+	},600);
+}
 function create_customer() {
 	if(customer_num%5==0){
 		lvl++;
