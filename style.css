@@ -21,7 +21,10 @@ h1 span:nth-child(3) {color:#178e64;}
 #game-mode:hover{color:#178e64;}
 
 #dro{width:70px; height:231px; background-image: url("images/dro.png");position:absolute;left: 410px;top: 320px; }
-#cabinet{width:182px; height:322px; background-image: url("images/cabinet.png");position:absolute;left: 189px;top: 229px; z-index:10;}
+
+#assistant{width:77px;height:auto;background-position:bottom; background-repeat: no-repeat; position:absolute; bottom: 49px;left:-77px;z-index: 50;}
+#mini-pet{width:69px;height:56px; top: 56px;left: 22px;position: absolute;background-position:center;}
+#cabinet{width:182px; height:322px;background-color:#e8e8e8; background-image: url("images/cabinet.png");position:absolute;left: 189px;top: 229px; z-index:60;}
 #doorway{width:126px; height:273px; background-image: url("images/doorway.png");position:absolute;left: 70px;top: 278px; }
 .syringe{width:140px; height:35px; background-image: url("images/syringe.png");position:relative; margin-left: 21px; margin-top: 44px; display:none;}
 .syringe:hover{cursor: pointer; background-color:#b4e5d4; }
