@@ -18,7 +18,9 @@ h1 span:nth-child(3) {color:#178e64;}
 #lvl-value, #money-value{color:#178e64; z-index:2; }
 #money-change{position: relative;left: 187px;top: 7px; color:#10b8c4;}
 #game-mode{position: absolute;right: 7px; color:#ffffff;font-size:20px;cursor:pointer;}
+#music{position: absolute;right: 160px; color:#ffffff;font-size:20px;cursor:pointer;}
 #game-mode:hover{color:#178e64;}
+#music:hover{color:#178e64;}
 
 #dro{width:70px; height:231px; background-image: url("images/dro.png");position:absolute;left: 410px;top: 320px; }
 

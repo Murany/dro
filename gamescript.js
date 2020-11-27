@@ -1,7 +1,8 @@
 $(document).ready(function(){
 	
-/*$('<img/>').attr('src', 'images/drunkstars.gif').on('load', function() {
+$('<img/>').attr('src', 'images/dro.png').on('load', function() {
    $(this).remove(); 
+   /*
    $('#drunkstars').css('background-image', 'url(images/drunkstars.gif)');
    $('<img/>').attr('src', "images/richard.gif").on('load', function() {
    $(this).remove(); 
@@ -54,8 +55,10 @@ $(document).ready(function(){
 	$('<img/>').attr('src', "images/ladderfall.gif").on('load', function() {
 	$('<img/>').attr('src', "images/loveforever.gif").on('load', function() {
 	$('<img/>').attr('src', "images/babies.gif").on('load', function() {
+		*/
    game_start();
 });
+/*
 });
 });
 });
@@ -79,12 +82,17 @@ $(document).ready(function(){
 });
 });*/
 var money = 0;
+var paused = false;
 var lvl = 0;
+var music_mode = false;
 var customer_num = 0;
 var game_mode = "auto";
 var can_click = false;
 var time_limit = null;
 var time_repeat = null;
+var ost1 = new Audio('sounds/sdro_ost1.mp3');
+var ok_sound = new Audio('sounds/good.mp3');
+var bad_sound = new Audio('sounds/bad.mp3');
 var akos = {head:{image:"images/heads/akos_h.png",width:49,height:49},
 			torso:{image:"images/torsos/akos_t.png",width:77,height:77,cutoff:7},
 			legs:{image:"images/legs/akos_l.png",width:77,height:91,w1:"images/legs/akos_l_w1.png",w2:"images/legs/akos_l_w2.png"}
@@ -138,7 +146,7 @@ var curr_pet = {
 };
 curr_assistant_direction = true;
 var last_pet = null;
-game_start();
+//game_start();
 	//var audio = new Audio('sss_theme.mp3');
 
 
@@ -146,16 +154,23 @@ function game_start() {
 
 	$("#maincontainer").show();
 	$("#loading").hide();
-	//audio.loop=true;
-	//audio.play();
+	ost1.loop=true;
+	ost1.volume = 0.2;
+	ok_sound.volume = 0.3;
+	bad_sound.volume = 0.3;
+	//ost1.play();
 	var m_padded = create_padded_string(money.toString(),"0",4);
 	var l_padded = create_padded_string(lvl.toString(),"0",2);
 	$("#money-value").html(m_padded);
 	$("#lvl-value").html(l_padded);
 	$("#start-next").show();
 	$("#game-mode").html("mode: "+game_mode);
+	$("#music").html("music: off");
 	
-	create_assistant(curr_assistant_direction);
+	setInterval(() => {
+		create_assistant(curr_assistant_direction);
+	}, 8000);
+
 }
 
 function create_padded_string(str,padStr, len) {
@@ -277,10 +292,21 @@ function start_timer(){
 			$("#time-limit").html(time_limit.getMinutes()+":"+time_limit.getSeconds());
 		}
 		else{
+			set_money(curr_customer.money,false);
 			clearInterval(time_repeat);
 			$('#time-limit').hide();
-			set_money(curr_customer.money,false);
-			move_costumer(curr_customer.pixels_to_reach,true);
+			setTimeout(function(){
+				$('#result-bubble').show();
+				$('#result').css("background-image" , "url('images/frown.png')" );
+			},500);
+
+			setTimeout(function(){
+				$('#result').css("background-image" , "none" );
+				$('#result-bubble').hide();
+				move_costumer(curr_customer.pixels_to_reach,true);
+				
+			},1500);
+			
 		}
 	},1000);
 }
@@ -504,10 +530,6 @@ function create_customer() {
 	move_costumer(pixels_to_reach,false);
 	
 	customer_num++;
-
-	if(customer_num%2 == 0){
-		create_assistant(curr_assistant_direction);
-	}
 		
 }
 	$("#start-next").click(function(){
@@ -519,6 +541,18 @@ function create_customer() {
 		(game_mode == "auto")?game_mode="manual":game_mode="auto";
 		$("#game-mode").html("mode: "+game_mode);
 	});
+	$("#music").click(function(){
+		music_mode = !music_mode;
+		$("#music").html("music: "+((music_mode)?"on":"off"));
+		if(music_mode){
+			ost1.play();
+		}
+		else{
+			ost1.stop();
+		}
+	});
+
+	
 	$(".syringe").click(function(){
 		if(can_click){
 			can_click = false;
@@ -551,6 +585,8 @@ function create_customer() {
 			
 			
 			if(ok){
+				ok_sound.loop=false;
+				ok_sound.play();
 				set_money(curr_customer.money,true);
 				setTimeout(function(){
 					$('#result-bubble').show();
@@ -558,6 +594,8 @@ function create_customer() {
 				},500);
 			}
 			else{
+				bad_sound.loop=false;
+				bad_sound.play();
 				set_money(curr_customer.money,false);
 				setTimeout(function(){
 					$('#result-bubble').show();
@@ -574,5 +612,11 @@ function create_customer() {
 			},1500);
 		}
 	});
+	window.onfocus = function() {
+		paused = false;
+	}
+	window.onblur = function() {
+		paused = true;
+	}
 		
 });
