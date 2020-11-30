@@ -167,8 +167,11 @@ function game_start() {
 	$("#game-mode").html("mode: "+game_mode);
 	$("#music").html("music: off");
 	
+	
 	setInterval(() => {
-		create_assistant(curr_assistant_direction);
+		if(!paused){
+			create_assistant(curr_assistant_direction);
+		}
 	}, 8000);
 
 }
@@ -193,7 +196,9 @@ function set_money(amount,addition){
 	var padded = (money>0)?create_padded_string(money_string,"0",4):money_string;
 	$("#money-value").html(padded);
 	setTimeout(function(){
-		$("#money-change").hide();
+	
+			$("#money-change").hide();
+		
 	},1500)
 }
 function create_money(){
@@ -282,10 +287,36 @@ function shuffle(array) {
   return_array;
 }*/
 
+function arrays_compare(arrays,found_limit) {
+	
+	var total_found_count = 0;
+	var cols = arrays[0].length;
+	i = 0;
+	j = 0;
+	var prew = null;
+
+	while(i < cols || total_found_count <= found_limit) {
+		var curr_col_found_count = 0;
+		j = 0;
+		while (j < arrays.length) {
+			if( j> 0 && arrays[i][j] === prew){
+				curr_col_found_count++;
+				if(curr_col_found_count == arrays.length){
+					total_found_count++;
+				}
+			}
+			prew = arrays[i][j];
+			j++;
+		}
+		i++;
+	}
+}
+
 function start_timer(){
 	$("#time-limit").html(time_limit.getMinutes()+":"+time_limit.getSeconds());
 	$('#time-limit').show();
 	time_repeat = setInterval(function(){
+		if(!paused){
 		if(time_limit.getTime() > 0 ){
 			
 			time_limit = new Date(time_limit-1000);
@@ -296,34 +327,43 @@ function start_timer(){
 			clearInterval(time_repeat);
 			$('#time-limit').hide();
 			setTimeout(function(){
-				$('#result-bubble').show();
-				$('#result').css("background-image" , "url('images/frown.png')" );
+			
+					$('#result-bubble').show();
+					$('#result').css("background-image" , "url('images/frown.png')" );
+				
 			},500);
 
 			setTimeout(function(){
-				$('#result').css("background-image" , "none" );
-				$('#result-bubble').hide();
-				move_costumer(curr_customer.pixels_to_reach,true);
+				
+					$('#result').css("background-image" , "none" );
+					$('#result-bubble').hide();
+					move_costumer(curr_customer.pixels_to_reach,true);
 				
 			},1500);
 			
 		}
+	}
 	},1000);
 }
 function animate_pet(){
 	pet_time_repeat = setInterval(function(){
-		if( curr_pet.walking ){
-			
-			$('#pet').css({"background-image" : "url("+curr_pet.walk1+")"});
-			setTimeout(function(){
-					$('#pet').css({"background-image" : "url("+curr_pet.walk2+")"});
-				},300);
-		}
-		else{
-			clearInterval(pet_time_repeat);
-			$('#pet').css({"background-image" : "url("+curr_pet.stand+")"});
+		if(!paused){
+			if( curr_pet.walking ){
+				
+				$('#pet').css({"background-image" : "url("+curr_pet.walk1+")"});
+				setTimeout(function(){
+					
+							$('#pet').css({"background-image" : "url("+curr_pet.walk2+")"});
+						
+					},300);
+			}
+			else{
+				clearInterval(pet_time_repeat);
+				$('#pet').css({"background-image" : "url("+curr_pet.stand+")"});
+			}
 		}
 	},600);
+	
 }
 
 function animate_owner(){
@@ -332,7 +372,9 @@ function animate_owner(){
 			
 			$('#owner-legs').css({"background-image" : "url("+curr_owner.walk1+")"});
 			setTimeout(function(){
-					$('#owner-legs').css({"background-image" : "url("+curr_owner.walk2+")"});
+					
+						$('#owner-legs').css({"background-image" : "url("+curr_owner.walk2+")"});
+					
 				},300);
 		}
 		else{
@@ -366,14 +408,17 @@ function move_costumer(amount,positive){
 				create_illness();
 			}else{
 				setTimeout(function(){
-				reset_syringes();
-				if(game_mode == "auto"){
-					create_customer();
-				}
-				else{
-					$("#start-next").show();
-				}
+					
+						reset_syringes();
+						if(game_mode == "auto"){
+							create_customer();
+						}
+						else{
+							$("#start-next").show();
+						}
+					
 				},2500);
+				
 			}
 			curr_pet.walking=false;
 			curr_owner.walking=false;
@@ -396,24 +441,28 @@ function tell_illnesses(illnesses) {
 		
 	var repeat = setInterval(function(){
 			
-			
+		if(!paused){	
 			if(i < illnesses.length){
 				$('#symptom').css("background-image" , "url("+illnesses[i].image+")" );
 				setTimeout(function(){
-					$('#symptom').css("background-image" , "none" );
-					i++;
+					
+						$('#symptom').css("background-image" , "none" );
+						i++;
+					
 				},1000);
 				
 			}
 			if(i == illnesses.length){
 				setTimeout(function(){
-					//$('#symptom').css("background-image" , "none" );
-					$('#speech_bubble').hide();
-					create_medicine(illnesses);
+					
+						//$('#symptom').css("background-image" , "none" );
+						$('#speech_bubble').hide();
+						create_medicine(illnesses);
+					
 				},1000);
 				clearInterval(repeat);
 			}
-			
+		}
 			
 	}, 2000);
 	
@@ -461,12 +510,14 @@ function create_assistant(direction){
 	}
 	
 	assistant_time_repeat = setInterval(function(){
-		
+		if(!paused){
 		$('#assistant').css({"background-image" : "url("+assistant.w1+")"});
 		setTimeout(function(){
-				$('#assistant').css({"background-image" : "url("+assistant.w2+")"});
+				
+					$('#assistant').css({"background-image" : "url("+assistant.w2+")"});
+				
 			},300);
-		
+		}
 	},600);
 	
 	$( "#assistant" ).animate({
@@ -548,8 +599,9 @@ function create_customer() {
 			ost1.play();
 		}
 		else{
-			ost1.stop();
+			ost1.pause();
 		}
+
 	});
 
 	
@@ -561,10 +613,14 @@ function create_customer() {
 			$(this).css("background-image","none");
 			$("#selected-syringe").show();
 			setTimeout(function(){
-				$("#syringe-effect").show();
-				setTimeout(function(){
-					$("#syringe-effect").hide();
-				},500);
+				
+					$("#syringe-effect").show();
+					
+						setTimeout(function(){
+							$("#syringe-effect").hide();
+						},500);
+					
+				
 			},500);
 			ok = true;
 			i=0;
@@ -589,8 +645,10 @@ function create_customer() {
 				ok_sound.play();
 				set_money(curr_customer.money,true);
 				setTimeout(function(){
-					$('#result-bubble').show();
-					$('#result').css("background-image" , "url('images/smiley.png')" );
+					
+						$('#result-bubble').show();
+						$('#result').css("background-image" , "url('images/smiley.png')" );
+					
 				},500);
 			}
 			else{
@@ -598,16 +656,19 @@ function create_customer() {
 				bad_sound.play();
 				set_money(curr_customer.money,false);
 				setTimeout(function(){
-					$('#result-bubble').show();
-					$('#result').css("background-image" , "url('images/frown.png')" );
+					
+						$('#result-bubble').show();
+						$('#result').css("background-image" , "url('images/frown.png')" );
+					
 				},500);
 			}
 			clearInterval(time_repeat);
 			$('#time-limit').hide();
 			setTimeout(function(){
-				$('#result').css("background-image" , "none" );
-				$('#result-bubble').hide();
-				move_costumer(curr_customer.pixels_to_reach,true);
+			
+					$('#result').css("background-image" , "none" );
+					$('#result-bubble').hide();
+					move_costumer(curr_customer.pixels_to_reach,true);
 				
 			},1500);
 		}
