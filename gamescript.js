@@ -86,6 +86,7 @@ var paused = false;
 var lvl = 0;
 var music_mode = false;
 var customer_num = 0;
+var succes_num = 0;
 var game_mode = "auto";
 var can_click = false;
 var time_limit = null;
@@ -221,7 +222,7 @@ function create_illness() {
 	
 	var s_length = 0;
 	var milliseconds = 0;
-	var last_color = null;
+	var used_colors = [];
 	var arr_illnesses = [];
 	if(lvl <= 3){
 		s_length = 3;
@@ -242,15 +243,14 @@ function create_illness() {
 		milliseconds = 15000
 	}
 	while (arr_illnesses.length != s_length) {
-		var c = colors[Math.floor(Math.random() * colors.length)];
-		if (c !== last_color){
-			arr_illnesses.push(c);
+		var color = colors[Math.floor(Math.random() * colors.length)];
+		if (used_colors.findIndex(element => element === color) == -1){
+			arr_illnesses.push(color);
 		}
-		last_color = c;
+		used_colors.push(color);
 		
 	}
 	time_limit = new Date(milliseconds);
-	
 	curr_illnesses = arr_illnesses;	
 	tell_illnesses(arr_illnesses);
 }
@@ -289,27 +289,32 @@ function shuffle(array) {
 
 function arrays_compare(arrays,found_limit) {
 	
-	var total_found_count = 0;
+	var total_diff_found_count = 0;
 	var cols = arrays[0].length;
-	i = 0;
-	j = 0;
-	var prew = null;
+	var i = 0;
+	var j = 0;
+	//var prew = null;
 
-	while(i < cols || total_found_count <= found_limit) {
-		var curr_col_found_count = 0;
+	while(i < cols && total_diff_found_count != found_limit) {
+		var curr_col_same_count = 0;
+		var curr_col_history = [];
 		j = 0;
 		while (j < arrays.length) {
-			if( j> 0 && arrays[i][j] === prew){
-				curr_col_found_count++;
-				if(curr_col_found_count == arrays.length){
-					total_found_count++;
-				}
+			if( j> 0 && curr_col_history.find(element => element === arrays[j][i])){
+				curr_col_same_count++;
 			}
-			prew = arrays[i][j];
+			
+			//prew = arrays[j][i];
+			curr_col_history.push( arrays[j][i]);
 			j++;
+		}
+		if(curr_col_same_count == 0){
+			total_diff_found_count++;
 		}
 		i++;
 	}
+	return total_diff_found_count == found_limit;
+
 }
 
 function start_timer(){
@@ -323,6 +328,9 @@ function start_timer(){
 			$("#time-limit").html(time_limit.getMinutes()+":"+time_limit.getSeconds());
 		}
 		else{
+			bad_sound.loop=false;
+			bad_sound.play();
+			can_click = false;
 			set_money(curr_customer.money,false);
 			clearInterval(time_repeat);
 			$('#time-limit').hide();
@@ -471,26 +479,48 @@ function tell_illnesses(illnesses) {
 function create_medicine(illnesses){
 	
 	var shelves = ["#option-1 .code-wrap","#option-2 .code-wrap","#option-3 .code-wrap"];
-	var correct_self = shelves[Math.floor(Math.random() * shelves.length)];
+	shelves.forEach(function(shelf) {  
+		$(shelf).empty();
+	});
+	//clearing possible previous color codes
+	var correct_self_index = Math.floor(Math.random() * shelves.length);
+	var correct_self = shelves[correct_self_index];
 	
-	var uncorrects = [];
-	var uncorrects = illnesses.slice(); // copy the original
+	shelves.splice(correct_self_index, 1); //removing the correct one
+	var arrays = [];
+	var uncorrects1 = [];
+	var uncorrects2 = [];
+	var uncorrects1 = illnesses.slice(); // copy the original
+	var uncorrects2 = illnesses.slice(); // copy the original
 
-	var processed_arrays = [];
+	arrays.push(illnesses);
+	arrays.push(uncorrects1);
+	arrays.push(uncorrects2);
+	//gettin all of them together for checking
+	
+	while(!arrays_compare(arrays,1)){
+		let sh = shuffle(arrays[1]);
+		let sh2 = shuffle(arrays[2]);
+		arrays[1] = sh.slice(0);
+		arrays[2] = sh2.slice(0);
+		//while all arrays are different at least in one part
+	}
+	console.log(arrays);
 	
 	illnesses.forEach(function(illness) { 
-		$(correct_self).append("<div class='color-code' id='id"+illness.code+"' style='background-color:"+illness.code+"'></div>" ); //fill the correct self's color codes
+		$(correct_self).append("<div class='color-code' id='id"+illness.code+"' style='background-color:"+illness.code+"'></div>" ); 
+		//fill the correct self's color codes
 	}
 	);
 	
-	shelves.forEach(function(self) {  
-		if(self != correct_self){
-			uncorrects = shuffle(uncorrects);
-			uncorrects.forEach(function(uncorrect) {  
-					$(self).append( "<div class='color-code'  id='id"+uncorrect.code+"' style='background-color:"+uncorrect.code+"'></div>" );
-			});
-		}
-	});
+	arrays.shift(); //getting the correct ones out, leaving only the uncorrects
+	for (i = 0; i < shelves.length; i++) {
+		
+		arrays[i].forEach(function(color) {  
+			$(shelves[i]).append( "<div class='color-code'  id='id"+color.code+"' style='background-color:"+color.code+"'></div>" );
+		});
+		
+	}
 	$('.syringe').show();
 	can_click = true;
 	start_timer();
@@ -504,9 +534,11 @@ function create_assistant(direction){
 	$('#assistant').css({"height":assistant.height});
 	if(!direction){ //left-to-right
 		$('#assistant,#mini-pet').css({"-moz-transform" : "scaleX(-1)" , "-o-transform" : "scaleX(-1)" , "transform" : "scaleX(-1)", "filter" :  "FlipH", "-ms-filter":"FlipH"})
+		$('#mini-pet').css({"left":"7px"});
 	}
 	else{
 		$('#assistant,#mini-pet').css({"-moz-transform" : "scaleX(1)" , "-o-transform" : "scaleX(1)" , "transform" : "scaleX(1)", "filter" :  "FlipH", "-ms-filter":"FlipH"})
+		$('#mini-pet').css({"left":"22px"});
 	}
 	
 	assistant_time_repeat = setInterval(function(){
@@ -529,7 +561,7 @@ function create_assistant(direction){
 	});
 }
 function create_customer() {
-	if(customer_num%5==0){
+	if(succes_num%5==0){
 		lvl++;
 		set_lvl();
 	}
@@ -648,6 +680,7 @@ function create_customer() {
 					
 						$('#result-bubble').show();
 						$('#result').css("background-image" , "url('images/smiley.png')" );
+						succes_num++;
 					
 				},500);
 			}
