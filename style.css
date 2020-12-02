@@ -1,5 +1,10 @@
 @font-face {font-family: 'fff-forward'; src: url('FFFFORWA.TTF')  format('truetype')}
-
+@media only screen and (max-width: 600px)  {
+    h1{position:absolute;top:24px;left:7px;margin:0px;font-size: 34px; }
+    #values{z-index:2; position: absolute; top: 24px; left:582px;font-size:36px; }
+    #game-mode{position: absolute;right: 7px;top:7px; color:#ffffff;font-size:20px;cursor:pointer;}
+    #music{position: absolute;right: 160px;top:7px; color:#ffffff;font-size:20px;cursor:pointer;}
+}
 #maincontainer { width:900px; height:600px;overflow:hidden;margin:auto;background-color:#e8e8e8; background-repeat: no-repeat;display:none;}
 #gamecontainer { width:900px; height:600px; overflow:hidden;position:relative;font-family: 'fff-forward';}
 h1{position:absolute;top:10px;left:7px;margin:0px;font-size: 34px; }
@@ -48,10 +53,3 @@ h1 span:nth-child(3) {color:#178e64;}
 #owner-head{position:relative; background-position:center;margin:auto;}
 #owner-torso{position:relative; z-index: 100; background-position:center;}
 #owner-legs{position:relative; z-index: 0; background-position:center;}
-
-@media only screen and (max-width: 600px)  {
-    h1{position:absolute;top:24px;left:7px;margin:0px;font-size: 34px; }
-    #values{z-index:2; position: absolute; top: 24px; left:582px;font-size:36px; }
-    #game-mode{position: absolute;right: 7px;top:7px; color:#ffffff;font-size:20px;cursor:pointer;}
-    #music{position: absolute;right: 160px;top:7px; color:#ffffff;font-size:20px;cursor:pointer;}
-}
