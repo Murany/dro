@@ -505,7 +505,6 @@ function create_medicine(illnesses){
 		arrays[2] = sh2.slice(0);
 		//while all arrays are different at least in one part
 	}
-	console.log(arrays);
 	
 	illnesses.forEach(function(illness) { 
 		$(correct_self).append("<div class='color-code' id='id"+illness.code+"' style='background-color:"+illness.code+"'></div>" ); 
