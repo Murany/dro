@@ -86,6 +86,7 @@ var paused = false;
 var lvl = 0;
 var music_mode = false;
 var customer_num = 0;
+var assistant_num = 0;
 var succes_num = 0;
 var game_mode = "auto";
 var can_click = false;
@@ -98,6 +99,7 @@ var akos = {head:{image:"images/heads/akos_h.png",width:49,height:49},
 			torso:{image:"images/torsos/akos_t.png",width:77,height:77,cutoff:7},
 			legs:{image:"images/legs/akos_l.png",width:77,height:91,w1:"images/legs/akos_l_w1.png",w2:"images/legs/akos_l_w2.png"}
 			};
+var terminator = {width:77,height:259,w1:"images/assistants/t_w1.png",w2:"images/assistants/t_w2.png"}
 var assistants = [{width:77,height:231,w1:"images/assistants/assistant1_w1.png",w2:"images/assistants/assistant1_w2.png"}, 
 				  {width:77,height:231,w1:"images/assistants/assistant2_w1.png",w2:"images/assistants/assistant2_w2.png"}, ];
 var mini_pets = [{width:69,height:56,image:"images/assistants/mini_pet_1.png"}, 
@@ -530,6 +532,10 @@ function create_assistant(direction){
 	var assistant = assistants[Math.floor(Math.random() * assistants.length)];
 	var mini_pet = mini_pets[Math.floor(Math.random() * mini_pets.length)];
 	$('#mini-pet').css({"background-image" : "url("+mini_pet.image+")"});
+	if(assistant_num>0 && assistant_num%5==0){
+		assistant = terminator;
+		$('#mini-pet').css({"background-image" : "none"});
+	}
 	$('#assistant').css({"height":assistant.height});
 	if(!direction){ //left-to-right
 		$('#assistant,#mini-pet').css({"-moz-transform" : "scaleX(-1)" , "-o-transform" : "scaleX(-1)" , "transform" : "scaleX(-1)", "filter" :  "FlipH", "-ms-filter":"FlipH"})
@@ -558,6 +564,7 @@ function create_assistant(direction){
 				clearInterval(assistant_time_repeat);
 			}
 	});
+	assistant_num++;
 }
 function create_customer() {
 	if(succes_num%5==0){
