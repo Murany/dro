@@ -56,7 +56,7 @@ $('<img/>').attr('src', 'images/dro.png').on('load', function() {
 	$('<img/>').attr('src', "images/loveforever.gif").on('load', function() {
 	$('<img/>').attr('src', "images/babies.gif").on('load', function() {
 		*/
-   game_start();
+   
 });
 /*
 });
@@ -83,6 +83,7 @@ $('<img/>').attr('src', 'images/dro.png').on('load', function() {
 });*/
 var money = 0;
 var paused = false;
+var loading = true;
 var lvl = 0;
 var music_mode = false;
 var customer_num = 0;
@@ -149,26 +150,69 @@ var curr_pet = {
 };
 curr_assistant_direction = true;
 var last_pet = null;
-//game_start();
-	//var audio = new Audio('sss_theme.mp3');
 
+var imageRecord = pets.slice();
+imageRecord = imageRecord.concat(ownerheads);
+imageRecord = imageRecord.concat(ownertorsos);
+imageRecord = imageRecord.concat(ownerlegs);
+//console.log(imageRecord);
+loadAllImages(0);
+function loadAllImages(index){
+	
+	if( index >= imageRecord.length ){
+		game_start();
+		return;
+	}
+	//create image object
+	var image = new Image();
+	//add image path
+	image.src = imageRecord[index].image;
+	console.log(imageRecord[index].image);
+	
+	/*if(imageRecord[index].w1 !== 'undefined' && imageRecord[index].w2 !== 'undefined'){
+		var w1 = new Image();
+		var w2 = new Image();
+		
+		w1.src = imageRecord[index].w1;
+		w2.src = imageRecord[index].w2;
+	}*/
+	//bind load event
+	image.onload = function(){
+
+		/*if(imageRecord[index].w1 !== 'undefined' && imageRecord[index].w2 !== 'undefined'){
+			w1.onload = function(){
+				w2.onload = function(){
+					
+					loadAllImages(index + 1);
+				}
+			}
+		}else{*/
+			
+			loadAllImages(index + 1);
+		//}
+	
+	}
+	
+}
+	  
 
 function game_start() {
 
 	$("#maincontainer").show();
+	loading = false;
 	$("#loading").hide();
 	ost1.loop=true;
 	ost1.volume = 0.2;
 	ok_sound.volume = 0.3;
 	bad_sound.volume = 0.3;
-	//ost1.play();
+
 	var m_padded = create_padded_string(money.toString(),"0",4);
 	var l_padded = create_padded_string(lvl.toString(),"0",2);
 	$("#money-value").html(m_padded);
 	$("#lvl-value").html(l_padded);
 	$("#start-next").show();
 	$("#game-mode").html("mode: "+game_mode);
-	$("#music").html("music: off");
+	//$("#music").html("music: off");
 	
 	
 	setInterval(() => {
@@ -566,6 +610,18 @@ function create_assistant(direction){
 	});
 	assistant_num++;
 }
+
+function toggle_music(){
+	music_mode = !music_mode;
+	$("#music").html("music: "+((music_mode)?"on":"off"));
+	if(music_mode){
+		ost1.play();
+	}
+	else{
+		ost1.pause();
+	}
+}
+
 function create_customer() {
 	if(succes_num%5==0){
 		lvl++;
@@ -622,6 +678,9 @@ function create_customer() {
 		
 }
 	$("#start-next").click(function(){
+		if(!loading){
+			toggle_music();
+		}
 		create_customer();
 		$(this).hide();
 		$(this).html("Next");
@@ -631,14 +690,8 @@ function create_customer() {
 		$("#game-mode").html("mode: "+game_mode);
 	});
 	$("#music").click(function(){
-		music_mode = !music_mode;
-		$("#music").html("music: "+((music_mode)?"on":"off"));
-		if(music_mode){
-			ost1.play();
-		}
-		else{
-			ost1.pause();
-		}
+		
+		toggle_music();
 
 	});
 
