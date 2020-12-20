@@ -678,7 +678,7 @@ function create_customer() {
 		
 }
 	$("#start-next").click(function(){
-		if(!loading){
+		if(!loading && customer_num == 0){
 			toggle_music();
 		}
 		create_customer();

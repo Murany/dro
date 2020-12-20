@@ -22,8 +22,8 @@ h1 span:nth-child(3) {color:#178e64;}
 #lvl-label, #money-label{color:#ffffff; z-index:2;}
 #lvl-value, #money-value{color:#178e64; z-index:2; }
 #money-change{position: relative;left: 187px;top: 7px; color:#10b8c4;}
-#game-mode{position: absolute;right: 7px; color:#ffffff;font-size:20px;cursor:pointer;}
-#music{position: absolute;right: 160px; color:#ffffff;font-size:20px;cursor:pointer;}
+#game-mode{float: right;margin-right: 7px; color:#ffffff;font-size:20px;cursor:pointer;}
+#music{float: right;margin-right: 7px; color:#ffffff;font-size:20px;cursor:pointer;}
 #game-mode:hover{color:#178e64;}
 #music:hover{color:#178e64;}
 
