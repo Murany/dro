@@ -3,7 +3,7 @@ $(document).ready(function(){
 var money = 0;
 var paused = false;
 var loading = true;
-var lvl = 3;
+var lvl = 0;
 var music_mode = false;
 var customer_num = 0;
 var assistant_num = 0;
