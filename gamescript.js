@@ -3,7 +3,7 @@ $(document).ready(function(){
 var money = 0;
 var paused = false;
 var loading = true;
-var lvl = 0;
+var lvl = 1;
 var music_mode = false;
 var customer_num = 0;
 var assistant_num = 0;
@@ -551,7 +551,7 @@ function toggle_music(){
 }
 
 function create_customer() {
-	if(succes_num%5==0){
+	if(succes_num>0 && succes_num%5==0){
 		lvl++;
 		set_lvl();
 	}
