@@ -1,90 +1,9 @@
 $(document).ready(function(){
 	
-$('<img/>').attr('src', 'images/dro.png').on('load', function() {
-   $(this).remove(); 
-   /*
-   $('#drunkstars').css('background-image', 'url(images/drunkstars.gif)');
-   $('<img/>').attr('src', "images/richard.gif").on('load', function() {
-   $(this).remove(); 
-   $('#richard').css('background-image', 'url(images/richard.gif)');
-   $('<img/>').attr('src', "images/anita.gif").on('load', function() {
-   $(this).remove(); 
-   $('#anita').css('background-image', 'url(images/anita.gif)');
-   $('<img/>').attr('src', "images/moneymoneymoney.gif").on('load', function() {
-   $(this).remove(); 
-   $('#moneymoneymoney').css('background-image', 'url(images/moneymoneymoney.gif)');
-   $('<img/>').attr('src', "images/bastard.gif").on('load', function() {
-   $(this).remove(); 
-   $('#bastardbastard').css('background-image', 'url(images/bastard.gif)');
-   $('<img/>').attr('src', "images/drunktalk.gif").on('load', function() {
-   $(this).remove(); 
-   $('#drunktalk').css('background-image', 'url(images/drunktalk.gif)');
-   $('<img/>').attr('src', "images/banner.gif").on('load', function() {
-   $(this).remove(); 
-   $('#banner').css('background-image', 'url(images/banner.gif)');
-   $('<img/>').attr('src', "images/wave.gif").on('load', function() {
-   $(this).remove(); 
-   $('#gamecontainer').css('background-image', 'url(images/wave.gif)');
-   $('<img/>').attr('src', "images/ladder.png").on('load', function() {
-   $(this).remove(); 
-   $('#ladder').css('background-image', 'url(images/ladder.png)');
-   $('<img/>').attr('src', "images/loveyouforever.png").on('load', function() {
-   $(this).remove(); 
-   $('#loveyouforever').css('background-image', 'url(images/loveyouforever.png)');
-   $('<img/>').attr('src', "images/butidontloveyou.png").on('load', function() {
-   $(this).remove(); 
-   $('#butidontloveyou').css('background-image', 'url(images/butidontloveyou.png)');
-   $('<img/>').attr('src', "images/nothing.png").on('load', function() {
-   $(this).remove(); 
-   $('#nothing').css('background-image', 'url(images/nothing.png)');
-   $('<img/>').attr('src', "images/death.png").on('load', function() {
-   $(this).remove(); 
-   $('#death').css('background-image', 'url(images/death.png)');
-   $('<img/>').attr('src', "images/floor.png").on('load', function() {
-   $(this).remove(); 
-   $('#floor').css('background-image', 'url(images/floor.png)');
-   $('<img/>').attr('src', "images/bastard.gif").on('load', function() {
-   $(this).remove(); 
-   $('#bastard').css('background-image', 'url(images/bastard.gif)');
-   
-    $('<img/>').attr('src', "images/bastardfall.gif").on('load', function() {
-	$('<img/>').attr('src', "images/anitawalk.gif").on('load', function() {
-	$('<img/>').attr('src', "images/anitahappy.png").on('load', function() {
-	$('<img/>').attr('src', "images/richardhappy.png").on('load', function() {
-	$('<img/>').attr('src', "images/richardwalk.gif").on('load', function() {
-	$('<img/>').attr('src', "images/ladderfall.gif").on('load', function() {
-	$('<img/>').attr('src', "images/loveforever.gif").on('load', function() {
-	$('<img/>').attr('src', "images/babies.gif").on('load', function() {
-		*/
-   
-});
-/*
-});
-});
-});
-});
-});
-});
-});
-});
-});
-});
-});
-});
-});
-});
-});
-});
-});
-});
-});
-});
-});
-});*/
 var money = 0;
 var paused = false;
 var loading = true;
-var lvl = 0;
+var lvl = 3;
 var music_mode = false;
 var customer_num = 0;
 var assistant_num = 0;
@@ -130,7 +49,16 @@ var ownerlegs = [{image:"images/legs/o_l1.png",width:63,height:105,w1:"images/le
 				 {image:"images/legs/o_l2.png",width:57,height:105,w1:"images/legs/o_l2_w1.png",w2:"images/legs/o_l2_w2.png"},
 				 {image:"images/legs/o_l3.png",width:63,height:84,w1:"images/legs/o_l3_w1.png",w2:"images/legs/o_l3_w2.png"},
 				 {image:"images/legs/o_l4.png",width:63,height:98,w1:"images/legs/o_l4_w1.png",w2:"images/legs/o_l4_w2.png"}];	
-var colors = [{image:"images/s_red.png",code:"#c43810"}, {image:"images/s_black.png",code:"#000000"},  {image:"images/s_blue.png",code:"#1747ba"},  {image:"images/s_green.png",code:"#36b60f"}, {image:"images/s_orange.png",code:"#d06612"} ];
+var colors = [{image:"images/s_red.png",code:"#c43810"}, 
+			  {image:"images/s_black.png",code:"#000000"},
+			  {image:"images/s_blue.png",code:"#1747ba"},
+			  {image:"images/s_green.png",code:"#36b60f"},
+			  {image:"images/s_orange.png",code:"#d06612"}, 
+			  {image:"images/s_yellow.png",code:"#efcc20"},
+			  {image:"images/s_purple.png",code:"#750b9f"},
+			  {image:"images/s_brown.png",code:"#3d2503"},
+			  {image:"images/s_pink.png",code:"#ef8be1"}   
+			];
 var curr_illnesses = new Array;
 var curr_customer = {
 	pixels_to_reach : 0,
@@ -272,14 +200,14 @@ function create_illness() {
 	var arr_illnesses = [];
 	if(lvl <= 3){
 		s_length = 3;
-		milliseconds = 40000
-	}
-	else if(6 >= lvl >3 )
-	{
-		s_length = 5;
 		milliseconds = 30000
 	}
-	else if(9 >= lvl >6 )
+	else if(6 > lvl && lvl > 3 )
+	{
+		s_length = 5;
+		milliseconds = 20000
+	}
+	else if(9 > lvl && lvl > 6 )
 	{
 		s_length = 7;
 		milliseconds = 20000
