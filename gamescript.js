@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	
 var money = 0;
+var cross_click = 0;
 var paused = false;
 var loading = true;
 var lvl = 1;
@@ -12,6 +13,7 @@ var game_mode = "auto";
 var can_click = false;
 var time_limit = null;
 var time_repeat = null;
+var end_game_sequence = false;
 var ost1 = new Audio('sounds/sdro_ost1.mp3');
 var ok_sound = new Audio('sounds/good.mp3');
 var bad_sound = new Audio('sounds/bad.mp3');
@@ -19,11 +21,16 @@ var akos = {head:{image:"images/heads/akos_h.png",width:49,height:49},
 			torso:{image:"images/torsos/akos_t.png",width:77,height:77,cutoff:7},
 			legs:{image:"images/legs/akos_l.png",width:77,height:91,w1:"images/legs/akos_l_w1.png",w2:"images/legs/akos_l_w2.png"}
 			};
+var rico = {head:{image:"images/heads/r_h.png",width:35,height:56},
+	torso:{image:"images/torsos/r_t.png",width:94,height:77,cutoff:7},
+	legs:{image:"images/legs/o_l.png",width:63,height:105,image:"images/legs/o_l1.png",w1:"images/legs/o_l1_w1.png",w2:"images/legs/o_l1_w2.png"}
+};
 var terminator = {width:77,height:259,w1:"images/assistants/t_w1.png",w2:"images/assistants/t_w2.png"}
 var assistants = [{width:77,height:231,w1:"images/assistants/assistant1_w1.png",w2:"images/assistants/assistant1_w2.png"}, 
 				  {width:77,height:231,w1:"images/assistants/assistant2_w1.png",w2:"images/assistants/assistant2_w2.png"}, ];
 var mini_pets = [{width:69,height:56,image:"images/assistants/mini_pet_1.png"}, 
-				 {width:69,height:56,image:"images/assistants/mini_pet_2.png"} ];				  
+				 {width:69,height:56,image:"images/assistants/mini_pet_2.png"} ];	
+var heart = {image:"images/heart.png",width:120,height:105};				 
 var pets = [{image:"images/pets/cat1.png",width:119,height:105,w1:"images/pets/cat1w1.png",w2:"images/pets/cat1w2.png"}, 
 			{image:"images/pets/dog1.png",width:140,height:122,w1:"images/pets/dog1w1.png",w2:"images/pets/dog1w2.png"},
 			{image:"images/pets/rabbit.png",width:91,height:77,w1:"images/pets/rabbitw1.png",w2:"images/pets/rabbitw2.png"}, 
@@ -35,7 +42,7 @@ var pets = [{image:"images/pets/cat1.png",width:119,height:105,w1:"images/pets/c
 			{image:"images/pets/goat.png",width:133,height:133,w1:"images/pets/goatw1.png",w2:"images/pets/goatw2.png"},
 			{image:"images/pets/sneak.png",width:196,height:224,w1:"images/pets/sneakw1.png",w2:"images/pets/sneak.png"},
 			{image:"images/pets/shark.png",width:220,height:245,w1:"images/pets/sharkw1.png",w2:"images/pets/sharkw2.png"},
-			{image:"images/pets/lion.png",width:217,height:196,w1:"images/pets/lionw1.png",w2:"images/pets/lionw2.png"}
+			{image:"images/pets/lion.png",width:217,height:196,w1:"images/pets/lionw1.png",w2:"images/pets/lionw2.png"},
 			];
 var ownerheads = [{image:"images/heads/o_h1.png",width:63,height:78}, 
 				  {image:"images/heads/o_h2.png",width:35,height:56}, 
@@ -95,7 +102,7 @@ function loadAllImages(index){
 	var image = new Image();
 	//add image path
 	image.src = imageRecord[index].image;
-	console.log(imageRecord[index].image);
+	//console.log(imageRecord[index].image);
 	
 	/*if(imageRecord[index].w1 !== 'undefined' && imageRecord[index].w2 !== 'undefined'){
 		var w1 = new Image();
@@ -192,6 +199,9 @@ function create_money(){
 	
 	return Math.floor(Math.random() * max) + 10 
 }
+function endroll_credits(){
+	
+}
 function create_illness() {
 	
 	var s_length = 0;
@@ -207,7 +217,7 @@ function create_illness() {
 		s_length = 5;
 		milliseconds = 20000
 	}
-	else if(9 > lvl && lvl > 6 )
+	else if(9 >= lvl && lvl > 6 )
 	{
 		s_length = 7;
 		milliseconds = 20000
@@ -330,7 +340,7 @@ function start_timer(){
 function animate_pet(){
 	pet_time_repeat = setInterval(function(){
 		if(!paused){
-			if( curr_pet.walking ){
+			if( curr_pet.walking){
 				
 				$('#pet').css({"background-image" : "url("+curr_pet.walk1+")"});
 				setTimeout(function(){
@@ -371,6 +381,9 @@ function move_costumer(amount,positive){
 	curr_owner.walking = true;
 	animate_pet();
 	animate_owner();	
+	if(lvl > 9 ){
+		amount = 512;
+	}
 	var string_val = ((positive)?"+":"-")+"=";
 	if(positive){ //leaving
 		$('.bg-to-flip').each(function( index ) {
@@ -387,7 +400,13 @@ function move_costumer(amount,positive){
     left: string_val+amount,}, {duration: 3300,specialEasing: {width: "linear"},
 		complete: function() {
 			if(!positive){	// arriwing	
-				create_illness();
+				if(lvl != 10){
+					create_illness();
+				}
+				else{
+					$("#dro_heart").show();
+					endroll_credits();
+				}
 			}else{
 				setTimeout(function(){
 					
@@ -440,6 +459,7 @@ function tell_illnesses(illnesses) {
 						//$('#symptom').css("background-image" , "none" );
 						$('#speech_bubble').hide();
 						create_medicine(illnesses);
+						debugger
 					
 				},1000);
 				clearInterval(repeat);
@@ -500,43 +520,45 @@ function create_medicine(illnesses){
 	
 }
 function create_assistant(direction){
-	var string_val = ((direction)?"+":"-")+"=";
-	var assistant = assistants[Math.floor(Math.random() * assistants.length)];
-	var mini_pet = mini_pets[Math.floor(Math.random() * mini_pets.length)];
-	$('#mini-pet').css({"background-image" : "url("+mini_pet.image+")"});
-	if(assistant_num>0 && assistant_num%5==0){
-		assistant = terminator;
-		$('#mini-pet').css({"background-image" : "none"});
-	}
-	$('#assistant').css({"height":assistant.height});
-	if(!direction){ //left-to-right
-		$('#assistant,#mini-pet').css({"-moz-transform" : "scaleX(-1)" , "-o-transform" : "scaleX(-1)" , "transform" : "scaleX(-1)", "filter" :  "FlipH", "-ms-filter":"FlipH"})
-		$('#mini-pet').css({"left":"7px"});
-	}
-	else{
-		$('#assistant,#mini-pet').css({"-moz-transform" : "scaleX(1)" , "-o-transform" : "scaleX(1)" , "transform" : "scaleX(1)", "filter" :  "FlipH", "-ms-filter":"FlipH"})
-		$('#mini-pet').css({"left":"22px"});
-	}
-	
-	assistant_time_repeat = setInterval(function(){
-		if(!paused){
-		$('#assistant').css({"background-image" : "url("+assistant.w1+")"});
-		setTimeout(function(){
-				
-					$('#assistant').css({"background-image" : "url("+assistant.w2+")"});
-				
-			},300);
+	if(!endroll_credits){
+		var string_val = ((direction)?"+":"-")+"=";
+		var assistant = assistants[Math.floor(Math.random() * assistants.length)];
+		var mini_pet = mini_pets[Math.floor(Math.random() * mini_pets.length)];
+		$('#mini-pet').css({"background-image" : "url("+mini_pet.image+")"});
+		if(assistant_num>0 && assistant_num%5==0){
+			assistant = terminator;
+			$('#mini-pet').css({"background-image" : "none"});
 		}
-	},600);
-	
-	$( "#assistant" ).animate({
-		left: string_val+300,}, {duration: 3500,specialEasing: {width: "linear"},
-			complete: function() {
-				curr_assistant_direction = !curr_assistant_direction;
-				clearInterval(assistant_time_repeat);
+		$('#assistant').css({"height":assistant.height});
+		if(!direction){ //left-to-right
+			$('#assistant,#mini-pet').css({"-moz-transform" : "scaleX(-1)" , "-o-transform" : "scaleX(-1)" , "transform" : "scaleX(-1)", "filter" :  "FlipH", "-ms-filter":"FlipH"})
+			$('#mini-pet').css({"left":"7px"});
+		}
+		else{
+			$('#assistant,#mini-pet').css({"-moz-transform" : "scaleX(1)" , "-o-transform" : "scaleX(1)" , "transform" : "scaleX(1)", "filter" :  "FlipH", "-ms-filter":"FlipH"})
+			$('#mini-pet').css({"left":"22px"});
+		}
+		
+		assistant_time_repeat = setInterval(function(){
+			if(!paused){
+			$('#assistant').css({"background-image" : "url("+assistant.w1+")"});
+			setTimeout(function(){
+					
+						$('#assistant').css({"background-image" : "url("+assistant.w2+")"});
+					
+				},300);
 			}
-	});
-	assistant_num++;
+		},600);
+		
+		$( "#assistant" ).animate({
+			left: string_val+300,}, {duration: 3500,specialEasing: {width: "linear"},
+				complete: function() {
+					curr_assistant_direction = !curr_assistant_direction;
+					clearInterval(assistant_time_repeat);
+				}
+		});
+		assistant_num++;
+	}
 }
 
 function toggle_music(){
@@ -555,15 +577,18 @@ function create_customer() {
 		lvl++;
 		set_lvl();
 	}
-	
-	pet = pets[Math.floor(Math.random() * pets.length)];
-	while (pet == last_pet) {
+	if(lvl<10){
 		pet = pets[Math.floor(Math.random() * pets.length)];
+		while (pet == last_pet) {
+			pet = pets[Math.floor(Math.random() * pets.length)];
+		}
+		if(customer_num == 9){ //akos
+			pet = pets[0];  //cat
+		}
+		
+		last_pet = pet;
+		$('#pet').css({"background-image" : "url("+pet.image+")" , "width" : pet.width , "height" : pet.height});
 	}
-	if(customer_num == 9){ //akos
-		pet = pets[0];  //cat
-	}
-	last_pet = pet;
 	
 	var head = ownerheads[Math.floor(Math.random() * ownerheads.length)];
 	var torso = ownertorsos[Math.floor(Math.random() * ownertorsos.length)];
@@ -573,7 +598,20 @@ function create_customer() {
 		torso = akos.torso; 
 		legs = akos.legs; 
 	}
-	$('#pet').css({"background-image" : "url("+pet.image+")" , "width" : pet.width , "height" : pet.height});
+	if(lvl > 9){
+		
+		$('#dro').css({"z-index" : "100"});
+		head = rico.head; 
+		torso = rico.torso; 
+		legs = rico.legs; 
+		$('#owner-torso').css({"margin-left" : "-32px"});
+		pet = heart;
+		$('#speech_bubble').show();
+	
+		$('#speech_bubble').attr('style', "background-image:url("+pet.image+')!important;width:120px!important;height:105px!important;display:block!important;margin-left:-30px!important');
+		
+	}
+	
 	$('#owner-head').css({"background-image" : "url("+head.image+")" , "width" : head.width , "height" : head.height});
 	$('#owner-torso').css({"background-image" : "url("+torso.image+")" , "width" : torso.width , "height" : torso.height});
 	$('#owner-legs').css({"background-image" : "url("+legs.image+")" , "width" : legs.width , "height" : legs.height});
@@ -622,7 +660,19 @@ function create_customer() {
 		toggle_music();
 
 	});
-
+	$("#cross").click(function(){
+		if(cross_click < 3){
+			cross_click++;
+			
+		}
+		else{
+			lvl = 10;
+			set_lvl();
+			ok_sound.loop=false;
+			ok_sound.play();
+		}
+		
+	});
 	
 	$(".syringe").click(function(){
 		if(can_click){

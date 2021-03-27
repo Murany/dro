@@ -26,7 +26,7 @@ h1 span:nth-child(3) {color:#178e64;}
 #music{float: right;margin-right: 7px; color:#ffffff;font-size:20px;cursor:pointer;}
 #game-mode:hover{color:#178e64;}
 #music:hover{color:#178e64;}
-
+#dro_heart{width:120px; height:105px; background-image: url("images/dro_heart.png");position:absolute;left: 410px;top: 215px; display:none;}
 #dro{width:70px; height:231px; background-image: url("images/dro.png");position:absolute;left: 410px;top: 320px; }
 
 #assistant{width:77px;height:auto;background-position:bottom; background-repeat: no-repeat; position:absolute; bottom: 49px;left:-77px;z-index: 50;}
