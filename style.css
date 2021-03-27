@@ -7,6 +7,20 @@
 }
 #maincontainer { width:900px; height:600px;overflow:hidden;margin:auto;background-color:#e8e8e8; background-repeat: no-repeat;display:none;}
 #gamecontainer { width:900px; height:600px; overflow:hidden;position:relative;font-family: 'fff-forward';}
+#credits{
+	font-family: 'fff-forward';color: #21e19d;
+	width: 900px;
+    height: 600px;
+    background-color: #5b7c70;
+	position:relative;
+	padding: 25px;
+}
+#credits h2 {
+	color:#ffffff;
+}
+#credits span {
+	color:#ffffff;
+}
 h1{position:absolute;top:10px;left:7px;margin:0px;font-size: 34px; }
 h1 span {margin-left:7px;}
 h1 span:nth-child(1) {color:#ffffff;}

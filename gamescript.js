@@ -199,7 +199,14 @@ function create_money(){
 	
 	return Math.floor(Math.random() * max) + 10 
 }
-function endroll_credits(){
+function roll_credits(){
+	
+	$('#gamecontainer').animate({
+		'top' : "-=600px" //moves left
+	},8000);
+	$('#credits').animate({
+	'top' : "-=600px" //moves left
+	},8000);
 	
 }
 function create_illness() {
@@ -405,7 +412,11 @@ function move_costumer(amount,positive){
 				}
 				else{
 					$("#dro_heart").show();
-					endroll_credits();
+					end_game_sequence = true;
+				setTimeout(function(){
+					roll_credits();
+				},2500);
+					
 				}
 			}else{
 				setTimeout(function(){
@@ -520,7 +531,7 @@ function create_medicine(illnesses){
 	
 }
 function create_assistant(direction){
-	if(!endroll_credits){
+	if(!end_game_sequence){
 		var string_val = ((direction)?"+":"-")+"=";
 		var assistant = assistants[Math.floor(Math.random() * assistants.length)];
 		var mini_pet = mini_pets[Math.floor(Math.random() * mini_pets.length)];
