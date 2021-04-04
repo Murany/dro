@@ -470,7 +470,6 @@ function tell_illnesses(illnesses) {
 						//$('#symptom').css("background-image" , "none" );
 						$('#speech_bubble').hide();
 						create_medicine(illnesses);
-						debugger
 					
 				},1000);
 				clearInterval(repeat);
@@ -584,7 +583,7 @@ function toggle_music(){
 }
 
 function create_customer() {
-	if(succes_num>0 && succes_num%5==0){
+	if(succes_num>0 && succes_num%3==0){
 		lvl++;
 		set_lvl();
 	}
@@ -617,6 +616,7 @@ function create_customer() {
 		legs = rico.legs; 
 		$('#owner-torso').css({"margin-left" : "-32px"});
 		pet = heart;
+		$('#pet').hide();
 		$('#speech_bubble').show();
 	
 		$('#speech_bubble').attr('style', "background-image:url("+pet.image+')!important;width:120px!important;height:105px!important;display:block!important;margin-left:-30px!important');
